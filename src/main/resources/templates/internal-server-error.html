@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Found</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/errors.css">
+</head>
+<body>
+<main class="main">
+    <section class="error-section">
+        <article class="error-container">
+            <img class="logo" src="/images/500InternalServerError.png" alt="500 Internal Server Error">
+        </article>
+        <h2>Възникна грешка!</h2>
+        <section class="details">
+            <p>
+                Ако имате нужда от помощ, моля, свържете с нас!
+            </p>
+            <strong>Допълнително съобщение: </strong>
+            <p th:text="${errorMessage}"></p>
+        </section>
+
+        <a th:href="@{/}" class="btn">
+            Към начална страница
+        </a>
+    </section>
+</main>
+
+</body>
+</html>

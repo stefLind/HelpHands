@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>HelpHands Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+<main class="main">
+    <section class="login-section">
+        <article class="logo-container">
+            <img class="logo" src="/images/HelpHandsLogo_LoginForm.png" alt="HelpHands Logo">
+        </article>
+        <h3>Влезте във Вашия профил</h3>
+
+        <form class="login-form" th:action="@{/login}" th:object="${loginRequest}" th:method="post">
+            <label for="username">Потребителско име:
+                <input type="text" id="username" name="username"
+                       placeholder="Въведете потребителското си име" th:field="*{username}" required>
+            </label>
+
+            <label for="password">Парола:
+                <input type="password" id="password" name="password"
+                       placeholder="Въведете своята парола" th:field="*{password}" required>
+            </label>
+            <p class="alert-warning" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+            <button class="btn" type="submit">
+                Вход
+            </button>
+        </form>
+
+        <p>Не сте се регистрирали?
+            <a th:href="@{/register}">Създайте си профил тук</a>
+        </p>
+        <p>Обратно към
+            <a th:href="@{/}">началната страница</a>
+        </p>
+    </section>
+</main>
+
+
+</body>
+</html>

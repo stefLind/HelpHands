@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<footer th:fragment="footer" class="page-footer">
+    <article class="footer-logo-container">
+        <img src="/images/HelpHandsLogo_icon_grey_small.png" alt="">
+    </article>
+
+    <article class="footer-menu-container">
+        <nav class="helphands-nav">
+            <h5>HelpHands</h5>
+            <ul>
+                <li>
+                    <a th:href="@{/}">Начало</a>
+                </li>
+                <li>
+                    <a href="#">Кампании</a>
+                </li>
+                <li>
+                    <a href="#">Създай кампания</a>
+                </li>
+                <li>
+                    <a href="#">Направи дарение</a>
+                </li>
+                <li>
+                    <a th:href="@{/user-profile}">Твоят профил</a>
+                </li>
+            </ul>
+        </nav>
+    </article>
+
+    <article class="footer-menu-container">
+        <nav class="contacts-nav">
+            <h5>Контакти</h5>
+            <ul>
+                <li>
+                    <h6>Адрес:</h6>
+                    <p>град София 1000, България</p>
+                </li>
+                <li>
+                    <h6>Електронна поща:</h6>
+                    <a href="mailto:info@gmail.com">info@gmail.com</a>
+                </li>
+                <li>
+                    <h6>Телефон:</h6>
+                    <a href="tel:2151234567">+359 34598768</a>
+                </li>
+            </ul>
+        </nav>
+    </article>
+
+    <article class="footer-menu-container">
+        <nav class="social-media-nav">
+            <h5>Последвай ни:</h5>
+            <ul>
+                <li>
+                    <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                </li>
+                <li>
+                    <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook fa-lg"></i></a>
+                </li>
+            </ul>
+            <p>&copy; 2025 - HelpHands.</p>
+            <p>All Rights Reserved.</p>
+        </nav>
+    </article>
+</footer>
+
+</body>
+</html>

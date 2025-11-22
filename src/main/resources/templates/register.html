@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>HelpHands Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+<main class="main">
+    <section class="login-section">
+        <article class="logo-container">
+            <img class="logo" src="/images/HelpHandsLogo_LoginForm.png" alt="HelpHands Logo">
+        </article>
+        <h3>Регистрация</h3>
+
+        <form class="login-form" th:action="@{/register}" th:method="post" th:object="${registerRequest}">
+            <label for="username">Потребителско име:
+                <input type="text" id="username" name="username"
+                       placeholder="Въведете потребителското си име" th:field="*{username}" required>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+            <p class="alert-warning" th:text="${usernameAlreadyExistsMessage}"></p>
+
+            <label for="mail">Имейл:
+                <input type="email" id="mail" name="mail"
+                       placeholder="Въведете електронната си поща" th:field="*{email}" required>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            <p class="alert-warning" th:text="${emailAlreadyExistsMessage}"></p>
+
+            <label for="password">Парола:
+                <input type="password" id="password" name="password"
+                       placeholder="Въведете своята парола" th:field="*{password}" required>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+
+            <label for="new-password">Потвърдете паролата си:
+                <input type="password" id="new-password" name="new-password "
+                       placeholder="Повторете своята парола" th:field="*{confirmedPassword}" required>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('confirmedPassword')}"
+               th:errors="*{confirmedPassword}"></p>
+            <p class="alert-warning" th:text="${passwordsNotMatchMessage}"></p>
+
+            <label for="user-type">Вид на потребителя:</label>
+            <select id="user-type" th:field="*{userType}" required>
+                <option th:value="${T(app.user.model.UserType).USER}" selected>Потребител</option>
+                <option th:value="${T(app.user.model.UserType).COMPANY}">Компания</option>
+                <option th:value="${T(app.user.model.UserType).EMPLOYEE}">Служител</option>
+            </select>
+
+            <button class="btn" type="submit">
+                Регистрация
+            </button>
+        </form>
+
+        <p>Вече имате регистрация?
+            <a th:href="@{/login}">Вход</a>
+        </p>
+        <p>Обратно към
+            <a th:href="@{/}">началната страница</a>
+        </p>
+    </section>
+</main>
+
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/user-profile.css">
+</head>
+<body>
+<header th:replace="~{fragments/navigation-bar.html :: header}"></header>
+
+<main class="main">
+    <section class="profile-section">
+        <section class="profile-picture-section">
+            <img th:src="${#arrays.isEmpty(user.profilePictureData) ? '/images/avatar_small.png' : 'data:image/jpeg;base64,' + user.generateBase64Image()}"
+                 alt="Avatar" class="profile-picture avatar">
+            <ul>
+                <li class="profile-name">
+                    <p th:text="${user.firstName}"></p>
+                </li>
+                <li class="profile-username">
+                    <p th:text="${user.username}"></p>
+                </li>
+                <li class="profile-info">
+                    <p th:text="${user.id}"></p>
+                </li>
+                <li class="profile-info">
+                    <p th:text="${#temporals.format(user.updatedOn, 'dd MMM yyyy HH:mm')}"></p>
+                </li>
+            </ul>
+        </section>
+
+        <section class="user-info-section">
+            <form th:action="@{'/users/' + ${user.id} + '/profile'}" th:object="${userEditRequest}" th:method="PUT"
+                  enctype="multipart/form-data" class="user-info-form">
+                <label th:if="${user.type.name() == 'COMPANY'}" for="companyName">Име на фирма:
+                    <input type="text" id="companyName" name="companyName" th:field="*{companyName}"
+                           placeholder="Фирма" required>
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}"></p>
+
+                <label for="firstName">Име:
+                    <input type="text" id="firstName" name="firstName" th:field="*{firstName}"
+                           placeholder="Въведете името си" required>
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
+
+                <label for="surname">Презиме:
+                    <input type="text" name="surname" id="surname" th:field="*{surname}"
+                           placeholder="Въведете презимето си">
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></p>
+
+                <label for="lastName">Фамилия:
+                    <input type="text" name="lastName" id="lastName" th:field="*{lastName}"
+                           placeholder="Въведете фамилията си" required>
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
+
+                <label for="email">Имейл:
+                    <input type="email" id="email" name="email" th:field="*{email}"
+                           placeholder="Въведете електронната си поща">
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
+                <label for="town">Град:
+                    <input type="text" id="town" name="town" th:field="*{town}"
+                           placeholder="Град" required>
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('town')}" th:errors="*{town}"></p>
+
+                <label for="address">Адрес:
+                    <input type="text" id="address" name="address" th:field="*{address}"
+                           placeholder="Адрес">
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+
+                <label for="user-type">Вид на потребителя:</label>
+                <select id="user-type" th:field="*{type}" disabled>
+                    <option th:value="${T(app.user.model.UserType).USER}">Потребител</option>
+                    <option th:value="${T(app.user.model.UserType).COMPANY}">Компания</option>
+                    <option th:value="${T(app.user.model.UserType).EMPLOYEE}">Служител</option>
+                </select>
+
+                <label th:if="${user.type.name() == 'EMPLOYEE'}" for="company">Фирма:
+                    <input type="text" id="company" name="company" th:field="*{companyId}"
+                           placeholder="Фирма" required>
+                </label>
+                <p class="alert-warning" th:if="${#fields.hasErrors('companyId')}" th:errors="*{companyId}"></p>
+
+                <label class="upload-image-btn" for="file">Изберете снимка...
+                    <input type="file" id="file" name="file" accept="image/*" style="display:none">
+                </label>
+
+                <button class="btn" type="submit">Запази</button>
+            </form>
+        </section>
+    </section>
+</main>
+
+<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

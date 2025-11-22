@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<header th:fragment="header" class="main-header">
+    <article class="logo-container">
+        <img class="logo" src="/images/HelpHandsLogo_smaller.png" alt="HelpHands Logo">
+    </article>
+    <nav>
+        <ul>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">За нас</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/searchCampaign">Кампании</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Новини</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Контакти</a>
+            </li>
+            <li class="nav-item login-nav-item">
+                <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                <button th:unless="${user ne null}" class="btn login-btn" onclick="location.href='/login'">Вход</button>
+                <div th:if="${user ne null}" class="dropdown">
+                    <img th:src="${#arrays.isEmpty(user.profilePictureData) ? '/images/avatar_small.png' : 'data:image/jpeg;base64,' + user.generateBase64Image()}"
+                         alt="Avatar" class="avatar header-avatar">
+                    <div class="dropdown-content">
+                        <a th:href="@{'/users/' + ${user.id} + '/profile'}">Моят профил</a>
+                        <a href="#">Кампании</a>
+                        <a href="#">Заявки за участия</a>
+                        <a th:href="@{/logout}">Изход</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+</body>
+</html>
