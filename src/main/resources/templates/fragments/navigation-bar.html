@@ -17,7 +17,7 @@
                 <a class="nav-link" th:href="@{/}">За нас</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/searchCampaign">Кампании</a>
+                <a class="nav-link" th:href="@{/campaigns}">Кампании</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Новини</a>
@@ -26,14 +26,14 @@
                 <a class="nav-link" href="#">Контакти</a>
             </li>
             <li class="nav-item login-nav-item">
-                <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+                <i class="fa-solid fa-magnifying-glass fa-lg" onclick="location.href='/campaigns'"></i>
                 <button th:unless="${user ne null}" class="btn login-btn" onclick="location.href='/login'">Вход</button>
                 <div th:if="${user ne null}" class="dropdown">
                     <img th:src="${#arrays.isEmpty(user.profilePictureData) ? '/images/avatar_small.png' : 'data:image/jpeg;base64,' + user.generateBase64Image()}"
                          alt="Avatar" class="avatar header-avatar">
                     <div class="dropdown-content">
                         <a th:href="@{'/users/' + ${user.id} + '/profile'}">Моят профил</a>
-                        <a href="#">Кампании</a>
+                        <a th:href="@{/campaigns}">Кампании</a>
                         <a href="#">Заявки за участия</a>
                         <a th:href="@{/logout}">Изход</a>
                     </div>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Campaign</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/create-campaign.css">
+</head>
+<body>
+<header th:replace="~{fragments/navigation-bar.html :: header}"></header>
+
+<section class="introduction">
+    <h1>Създаване на кампания</h1>
+    <p>
+        Създаването на кампания става лесно и бързо.
+    </p>
+    <p>
+        Започва с попълването на заглавие и кратко описание на кампанита.
+        След това се описва по-детайлно за какво е кампанията и каква помощ се търси.
+        В следващото поле се избира от предефиниран списък към кой тип спада кампанията.
+        В последните полета се попълва адрес, дата и час на събитието, и колко човека са нужни за кампанията.
+        В полетата за снимки могат да бъдат качени до три снимки за по-добро илюстриране на кампанията и нейната цел.
+    </p>
+</section>
+
+<main class="main">
+    <section class="create-campaign-section">
+        <form class="create-campaign-form" th:action="@{/campaign/new}" th:method="post" enctype="multipart/form-data"
+              th:object="${campaignCreationRequest}">
+            <label for="title">Заглавие:
+                <input type="text" id="title" name="title" th:field="*{title}"
+                       placeholder="Въведете заглавие на кампанията" required>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+
+            <label for="short-description">Кратко описание:
+                <textarea name="description" id="short-description" cols="30" rows="5" th:field="*{shortDescription}"
+                          placeholder="Напишете описание на кампанията" required></textarea>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('shortDescription')}"
+               th:errors="*{shortDescription}"></p>
+
+            <label for="description">Описание:
+                <textarea name="description" id="description" cols="30" rows="8" th:field="*{description}"
+                          placeholder="Напишете описание на кампанията" required></textarea>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
+
+            <label for="type">Вид:
+                <select name="type" id="type" th:field="*{type}" required>
+                    <option value="" selected="selected">Вид:</option>
+                    <option th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд</option>
+                    <option th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи</option>
+                    <option th:value="${T(app.campaign.model.CampaignType).FOOD}">Дарение на храна</option>
+                    <option th:value="${T(app.campaign.model.CampaignType).SERVICES}">Дарение на услуги</option>
+                </select>
+            </label>
+
+            <label for="status">Статус:
+                <select name="status" id="status" th:field="*{status}" disabled>
+                    <option th:value="${T(app.campaign.model.CampaignStatus).ACTIVE}" selected>Активна кампания</option>
+                    <option th:value="${T(app.campaign.model.CampaignStatus).CLOSED}">Затворена кампания</option>
+                    <option th:value="${T(app.campaign.model.CampaignStatus).CANCELLED}">Прекратена кампания</option>
+                </select>
+            </label>
+
+            <label for="town">Град:
+                <input type="text" id="town" name="town" th:field="*{location}" placeholder="Град" required>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
+
+            <label for="address">Адрес на събитието:
+                <input type="text" id="address" name="address" th:field="*{address}"
+                       placeholder="Адрес на кампанията" required>
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+
+            <label for="start-date">Начало на събитието:
+                <input type="date" id="start-date" name="date" th:field="*{startDate}" placeholder="Дата" required>
+            </label>
+
+            <label for="start-time">Начален час на събитието:
+                <input type="time" id="start-time" name="time" th:field="*{startTime}" placeholder="Час" required>
+            </label>
+
+            <label for="end-date">Край на събитието:
+                <input type="date" id="end-date" name="date" th:field="*{endDate}" placeholder="Дата" required>
+            </label>
+
+            <label for="end-time">Краен час на събитието:
+                <input type="time" id="end-time" name="time" th:field="*{endTime}" placeholder="Час" required>
+            </label>
+
+            <label for="people">Брой хора, нужни за кампанията:
+                <input type="number" id="people" name="people" th:field="*{peopleNeeded}" placeholder="Брой хора">
+            </label>
+
+            <label for="food">Храна, нужна за кампанията:
+                <input type="text" id="food" name="food" th:field="*{foodNeeded}"
+                       placeholder="Кратко описание на нужната храна">
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('foodNeeded')}" th:errors="*{foodNeeded}"></p>
+
+            <label for="things">Вещи, нужни за кампанията:
+                <input type="text" id="things" name="things" th:field="*{thingsNeeded}"
+                       placeholder="Кратко описание на нужните вещи - оборудване, дрехи, козметика...">
+            </label>
+            <p class="alert-warning" th:if="${#fields.hasErrors('thingsNeeded')}" th:errors="*{thingsNeeded}"></p>
+
+            <label class="upload-image-btn" for="file">Изберете снимка...
+                <input type="file" id="file" name="file" accept="image/*" style="display:none">
+            </label>
+
+            <button class="btn" type="submit">Запази</button>
+        </form>
+    </section>
+</main>
+
+<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

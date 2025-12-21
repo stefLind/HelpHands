@@ -1,5 +1,6 @@
 package app.user.model;
 
+import app.campaign.model.Campaign;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -69,6 +70,9 @@ public class User {
     // OneToMany relationship to define the employees
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> employees = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "creator")
+    private List<Campaign> campaigns = new ArrayList<>();
 
     public String generateBase64Image() {
         return Base64.getEncoder().encodeToString(this.profilePictureData);

@@ -19,16 +19,17 @@
                     <a th:href="@{/}">Начало</a>
                 </li>
                 <li>
-                    <a href="#">Кампании</a>
+                    <a th:href="@{/campaigns}">Кампании</a>
                 </li>
                 <li>
-                    <a href="#">Създай кампания</a>
+                    <a th:href="@{/campaign/new}">Създай кампания</a>
                 </li>
                 <li>
                     <a href="#">Направи дарение</a>
                 </li>
                 <li>
-                    <a th:href="@{/user-profile}">Твоят профил</a>
+                    <a th:if="${user ne null}" th:href="@{'/users/' + ${user.id} + '/profile'}">Твоят профил</a>
+                    <a th:unless="${user ne null}" th:href="@{/login}">Твоят профил</a>
                 </li>
             </ul>
         </nav>

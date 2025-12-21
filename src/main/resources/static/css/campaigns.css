@@ -1,3 +1,4 @@
+/*filter section*/
 .filters {
     background-color: #F8F8F8;
     display: flex;
@@ -22,6 +23,14 @@
 
 .filters label i {
     color: #062c51;
+}
+
+/*end filter section*/
+
+.main {
+    justify-content: center;
+    align-items: center;
+    margin: 70px;
 }
 
 .campaigns {
@@ -55,12 +64,12 @@
     font-size: 20px;
 }
 
-.campaign:nth-child(1) header, .campaign:nth-child(3) header {
+.campaign:nth-child(odd) header {
     background-color: #ffbf46;
     color: #062c51;
 }
 
-.campaign:nth-child(2) header {
+.campaign:nth-child(even) header {
     background-color: #005f7d;
     color: white;
 }
@@ -123,77 +132,35 @@
     background-color: transparent;
 }
 
-.border {
-    margin: 80px auto;
-    border-top: 8px dotted rgb(59, 207, 147, 0.4);
-    width: 90%
-}
-
-.information-section {
-    text-align: center;
-    margin: 50px auto;
-    line-height: 30px;
-}
-
-.information {
-    border-radius: 15px;
-    text-align: center;
-    margin: 50px;
-}
-
-.information-header {
+.pagination-nav {
     display: block;
     text-align: center;
-    box-shadow: none;
 }
 
-.information-header h2 {
+.pagination li {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+}
+
+.page-item a {
+    text-decoration: none;
     color: #3bcf93;
-    font-size: 30px;
 }
 
-.information-content {
-    display: flex;
-    align-items: center;
-    padding: 0 50px;
+.page-active {
+    background-color: #3bcf93;
+    color: white;
+    border-radius: 5px;
 }
 
-.donation-header {
-    justify-content: center;
-    box-shadow: none;
+.page-active a {
+    color: white;
 }
 
-.information.campaign-creation {
-    border: 4px solid #ffbf46;
-    background: rgb(255, 191, 70, 0.2);
+.page-item a:hover:not(.page-active a) {
+    background-color: lightgrey;
+    border-radius: 5px;
+    padding: 8px 16px;
 }
-
-.information.campaign-creation i {
-    color: #ffbf46;
-    margin-right: 10px;
-}
-
-.information.campaign-creation h4 {
-    color: #ffbf46;
-    font-size: 25px;
-}
-
-.information.donation {
-    border: 4px solid #005f7d;
-    background: rgb(0, 95, 125, 0.2);
-}
-
-.information.donation i {
-    color: #005f7d;
-    margin-right: 10px;
-}
-
-.information.donation h4 {
-    color: #005f7d;
-    font-size: 25px;
-}
-
-.donation-content {
-    padding: 0 30px 30px 30px;
-}
-

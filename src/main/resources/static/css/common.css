@@ -5,8 +5,29 @@ body, ul {
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
-    line-height: 30px;
     overflow-x: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+.introduction {
+    background-color: #3bcf93;
+    color: white;
+    text-align: center;
+    padding: 60px 120px 90px 120px;
+    line-height: 30px;
+}
+
+.introduction h1 {
+    font-size: 47px;
+    text-shadow: 2px 3px 0 grey;
+}
+
+.introduction p {
+    font-size: 20px;
+    font-weight: normal;
 }
 
 /*Navigation bar*/
@@ -22,6 +43,7 @@ header {
 .main-header {
     margin-bottom: 2px;
     box-shadow: 0 9px 8px -4px grey;
+    background-color: white;
 }
 
 header nav ul {
@@ -80,6 +102,7 @@ header nav ul {
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 6px 8px -1px #ccc;
+    font-size: 13px;
 }
 
 .avatar {

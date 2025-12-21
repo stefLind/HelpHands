@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Campaign</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/campaigns.css">
+</head>
+<body>
+<header th:replace="~{fragments/navigation-bar.html :: header}"></header>
+
+<section class="introduction">
+    <h1>Нашите кампании</h1>
+    <p>
+        Подайте ръка и дарете доброта!
+    </p>
+    <p>
+        Потърсете в нашите кампании и помогнете на тези в нужда!
+    </p>
+</section>
+
+<section class="filters">
+    <label for="location">
+        <i class="fa-solid fa-location-dot fa-2xl"></i>
+        <input type="text" placeholder="Локация" id="location">
+    </label>
+    <label for="type">
+        <i class="fa-solid fa-puzzle-piece fa-2xl"></i>
+        <select name="type" id="type">
+            <option value="" selected="selected">Вид</option>
+            <option value="labor">Дарение на труд</option>
+            <option value="things">Дарение на вещи</option>
+            <option value="things">Дарение на храна</option>
+            <option value="services">Дарение на услуги</option>
+        </select>
+    </label>
+    <label for="status">
+        <i class="fa-solid fa-heart-pulse fa-2xl"></i>
+        <select name="type" id="status">
+            <option value="" selected="selected">Статус</option>
+            <option value="active">Активни кампании</option>
+            <option value="closed">Затворени кампании</option>
+            <option value="deactivated">Прекратени кампании</option>
+        </select>
+    </label>
+    <label for="creator">
+        <i class="fa-solid fa-user-group fa-2xl"></i>
+        <input type="text" placeholder="Създател" id="creator">
+    </label>
+</section>
+<main class="main">
+    <section class="campaigns">
+        <article class="campaign">
+            <header class="campaign-header">
+            <span>
+                Труд
+            </span>
+                <h3>
+                    Помощ за почистване на Витоша
+                </h3>
+            </header>
+            <article class="campaign-details">
+            <span class="campaign-detail">
+                <i class="fa-solid fa-calendar-days"></i>
+                16 август 2025
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-stopwatch"></i>
+                4 часа
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-user-group"></i>
+                10 човека
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-location-dot"></i>
+                гр. София
+            </span>
+            </article>
+            <footer class="campaign-footer">
+                <article>
+                    <button class="btn">Към кампанията</button>
+                </article>
+                <article class="campaign-time-left">
+                    <span>Остават 10 дни</span>
+                </article>
+            </footer>
+        </article>
+        <article class="campaign">
+            <header class="campaign-header">
+            <span>
+                Услуги
+            </span>
+                <h3>
+                    Правна помощ за дом за деца
+                </h3>
+            </header>
+            <article class="campaign-details">
+            <span class="campaign-detail">
+                <i class="fa-solid fa-calendar-days"></i>
+                16 август 2025
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-stopwatch"></i>
+                2 часа
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-user-group"></i>
+                1 човек
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-location-dot"></i>
+                Онлайн
+            </span>
+            </article>
+            <footer class="campaign-footer">
+                <article>
+                    <button class="btn">Към кампанията</button>
+                </article>
+                <article class="campaign-time-left">
+                    <span>Остават 10 дни</span>
+                </article>
+            </footer>
+        </article>
+        <article class="campaign">
+            <header class="campaign-header">
+            <span>
+                Храна
+            </span>
+                <h3>
+                    Дом за възрастни хора - Нужда от храна
+                </h3>
+            </header>
+            <article class="campaign-details">
+            <span class="campaign-detail">
+                <i class="fa-solid fa-calendar-days"></i>
+                до 16 август 2025
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-utensils"></i>
+                Хляб, ориз, леща и др.
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-location-dot"></i>
+                гр. Перник
+            </span>
+            </article>
+            <footer class="campaign-footer">
+                <article>
+                    <button class="btn">Към кампанията</button>
+                </article>
+                <article class="campaign-time-left">
+                    <span>Остават 10 дни</span>
+                </article>
+            </footer>
+        </article>
+        <article class="campaign">
+            <header class="campaign-header">
+            <span>
+                Труд
+            </span>
+                <h3>
+                    Помощ за почистване на Витоша
+                </h3>
+            </header>
+            <article class="campaign-details">
+            <span class="campaign-detail">
+                <i class="fa-solid fa-calendar-days"></i>
+                16 август 2025
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-stopwatch"></i>
+                4 часа
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-user-group"></i>
+                10 човека
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-location-dot"></i>
+                гр. София
+            </span>
+            </article>
+            <footer class="campaign-footer">
+                <article>
+                    <button class="btn">Към кампанията</button>
+                </article>
+                <article class="campaign-time-left">
+                    <span>Остават 10 дни</span>
+                </article>
+            </footer>
+        </article>
+        <article class="campaign">
+            <header class="campaign-header">
+            <span>
+                Услуги
+            </span>
+                <h3>
+                    Правна помощ за дом за деца
+                </h3>
+            </header>
+            <article class="campaign-details">
+            <span class="campaign-detail">
+                <i class="fa-solid fa-calendar-days"></i>
+                16 август 2025
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-stopwatch"></i>
+                2 часа
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-user-group"></i>
+                1 човек
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-location-dot"></i>
+                Онлайн
+            </span>
+            </article>
+            <footer class="campaign-footer">
+                <article>
+                    <button class="btn">Към кампанията</button>
+                </article>
+                <article class="campaign-time-left">
+                    <span>Остават 10 дни</span>
+                </article>
+            </footer>
+        </article>
+        <article class="campaign">
+            <header class="campaign-header">
+            <span>
+                Храна
+            </span>
+                <h3>
+                    Дом за възрастни хора - Нужда от храна
+                </h3>
+            </header>
+            <article class="campaign-details">
+            <span class="campaign-detail">
+                <i class="fa-solid fa-calendar-days"></i>
+                до 16 август 2025
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-utensils"></i>
+                Хляб, ориз, леща и др.
+            </span>
+                <span class="campaign-detail">
+                <i class="fa-solid fa-location-dot"></i>
+                гр. Перник
+            </span>
+            </article>
+            <footer class="campaign-footer">
+                <article>
+                    <button class="btn">Към кампанията</button>
+                </article>
+                <article class="campaign-time-left">
+                    <span>Остават 10 дни</span>
+                </article>
+            </footer>
+        </article>
+    </section>
+    <nav class="pagination-nav">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li>
+            <li class="page-item page-active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li>
+        </ul>
+    </nav>
+</main>
+
+<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>
