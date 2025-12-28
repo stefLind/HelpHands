@@ -57,7 +57,7 @@
 </section>
 <main class="main">
     <section class="campaigns">
-        <article class="campaign" th:each="campaign : ${campaigns}">
+        <article class="campaign" th:each="campaign : ${campaignsPage.content}">
             <header class="campaign-header">
                 <span th:if="${campaign.type.name() == 'LABOR'}">Труд</span>
                 <span th:if="${campaign.type.name() == 'SERVICES'}">Услуги</span>
@@ -68,7 +68,7 @@
             <article class="campaign-details">
                 <span class="campaign-detail">
                     <i class="fa-solid fa-calendar-days"></i>
-                    <span th:text="${#temporals.format(campaign.startTime, 'dd.MM.yyyy')}"></span>
+                    <span th:text="${#temporals.format(campaign.startDate, 'dd.MM.yyyy')}"></span>
                 </span>
                 <span class="campaign-detail">
                     <i class="fa-solid fa-stopwatch"></i>
@@ -103,13 +103,18 @@
             </footer>
         </article>
     </section>
-    <nav class="pagination-nav">
+    <nav th:if="${campaignsPage.totalPages > 0}" class="pagination-nav">
         <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-left"></i></a></li>
-            <li class="page-item page-active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li>
+            <li class="page-item"><a class="page-link" th:href="@{/campaigns(page=${pageNumbers.first})}"><i
+                    class="fas fa-angle-double-left"></i></a></li>
+            <li th:each="pageNumber : ${pageNumbers}"
+                th:classappend="${pageNumber==(campaignsPage.number + 1)} ? 'page-item page-active' : 'page-item'">
+                <a th:href="@{/campaigns(page=${pageNumber})}"
+                   th:text="${pageNumber}"
+                   class="page-link"></a>
+            </li>
+            <li class="page-item"><a class="page-link" th:href="@{/campaigns(page=${pageNumbers.last})}"><i
+                    class="fas fa-angle-double-right"></i></a></li>
         </ul>
     </nav>
 </main>

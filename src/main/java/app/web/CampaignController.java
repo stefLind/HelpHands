@@ -8,17 +8,18 @@ import app.user.service.UserService;
 import app.web.dto.CampaignCreationRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -37,15 +38,25 @@ public class CampaignController {
     }
 
     @GetMapping("/campaigns")
-    public ModelAndView getCampaignsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        List<Campaign> campaigns = campaignService.getAllCampaigns();
+    public ModelAndView getCampaignsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @RequestParam("page") Optional<Integer> page) {
         ModelAndView modelAndView = new ModelAndView();
+        int currentPage = page.orElse(1);
 
         modelAndView.setViewName("campaigns");
-        modelAndView.addObject("campaigns", campaigns);
         if (authenticationMetadata != null) {
             User user = userService.getUserById(authenticationMetadata.getUserId());
             modelAndView.addObject("user", user);
+        }
+
+        Page<Campaign> campaignPage = campaignService.getCampaignsPage(currentPage);
+        modelAndView.addObject("campaignsPage", campaignPage);
+
+        int totalPages = campaignPage.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .collect(Collectors.toList());
+            modelAndView.addObject("pageNumbers", pageNumbers);
         }
 
         return modelAndView;

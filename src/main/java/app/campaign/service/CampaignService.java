@@ -7,17 +7,22 @@ import app.user.model.User;
 import app.web.dto.CampaignCreationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 @Service
 public class CampaignService {
 
+    private static final int PAGE_SIZE = 6;
     private final CampaignRepository campaignRepository;
 
     @Autowired
@@ -56,7 +61,19 @@ public class CampaignService {
         }
     }
 
-    public List<Campaign> getAllCampaigns() {
-        return campaignRepository.findAll();
+    public Page<Campaign> getCampaignsPage(int currentPage) {
+        int startItem = currentPage * PAGE_SIZE;
+        List<Campaign> list;
+
+        List<Campaign> campaigns = campaignRepository.findAll();
+
+        if (campaigns.size() < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + PAGE_SIZE, campaigns.size());
+            list = campaigns.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, PAGE_SIZE), campaigns.size());
     }
 }
