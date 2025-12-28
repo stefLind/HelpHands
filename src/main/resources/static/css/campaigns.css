@@ -116,7 +116,7 @@
     justify-content: space-between;
 }
 
-.campaign-footer button {
+.campaign-footer a {
     padding: 14px;
     margin-left: 18px;
     margin-bottom: -12px;
@@ -124,7 +124,6 @@
 
 .campaign-time-left {
     margin-right: 18px;
-    margin-bottom: -12px;
     border: 1px solid #e8254d;
     border-radius: 14px;
     padding: 12px;

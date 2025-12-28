@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -40,6 +41,8 @@ public class CampaignService {
                     .endDate(campaignCreationRequest.getEndDate())
                     .endTime(campaignCreationRequest.getEndTime())
                     .peopleNeeded(campaignCreationRequest.getPeopleNeeded())
+                    .thingsNeeded(campaignCreationRequest.getThingsNeeded())
+                    .foodNeeded(campaignCreationRequest.getFoodNeeded())
                     .pictureData(file.getBytes())
                     .createdOn(LocalDateTime.now())
                     .updatedOn(LocalDateTime.now())
@@ -51,5 +54,9 @@ public class CampaignService {
             log.error("Can't create campaign for user with id [%s].".formatted(user.getId()), e);
             throw new RuntimeException("Unable to save campaign for user with id: [%s]. Please try again.".formatted(user.getId()));
         }
+    }
+
+    public List<Campaign> getAllCampaigns() {
+        return campaignRepository.findAll();
     }
 }

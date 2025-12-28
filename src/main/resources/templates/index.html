@@ -38,19 +38,19 @@
         <i class="fa-solid fa-puzzle-piece fa-2xl"></i>
         <select name="type" id="type">
             <option value="" selected="selected">Вид</option>
-            <option value="labor">Дарение на труд</option>
-            <option value="things">Дарение на вещи</option>
-            <option value="things">Дарение на храна</option>
-            <option value="services">Дарение на услуги</option>
+            <option th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд</option>
+            <option th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи</option>
+            <option th:value="${T(app.campaign.model.CampaignType).FOOD}">Дарение на храна</option>
+            <option th:value="${T(app.campaign.model.CampaignType).SERVICES}">Дарение на услуги</option>
         </select>
     </label>
     <label for="status">
         <i class="fa-solid fa-heart-pulse fa-2xl"></i>
         <select name="type" id="status">
             <option value="" selected="selected">Статус</option>
-            <option value="active">Активни кампании</option>
-            <option value="closed">Затворени кампании</option>
-            <option value="deactivated">Прекратени кампании</option>
+            <option th:value="${T(app.campaign.model.CampaignStatus).ACTIVE}" selected>Активна кампания</option>
+            <option th:value="${T(app.campaign.model.CampaignStatus).CLOSED}">Затворена кампания</option>
+            <option th:value="${T(app.campaign.model.CampaignStatus).CANCELLED}">Прекратена кампания</option>
         </select>
     </label>
     <label for="creator">
