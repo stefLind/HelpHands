@@ -27,33 +27,36 @@
 </section>
 
 <section class="filters">
-    <label for="location">
-        <i class="fa-solid fa-location-dot fa-2xl"></i>
-        <input type="text" placeholder="Локация" id="location">
-    </label>
-    <label for="type">
-        <i class="fa-solid fa-puzzle-piece fa-2xl"></i>
-        <select name="type" id="type">
-            <option value="" selected="selected">Вид</option>
-            <option th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд</option>
-            <option th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи</option>
-            <option th:value="${T(app.campaign.model.CampaignType).FOOD}">Дарение на храна</option>
-            <option th:value="${T(app.campaign.model.CampaignType).SERVICES}">Дарение на услуги</option>
-        </select>
-    </label>
-    <label for="status">
-        <i class="fa-solid fa-heart-pulse fa-2xl"></i>
-        <select name="type" id="status">
-            <option value="" selected="selected">Статус</option>
-            <option th:value="${T(app.campaign.model.CampaignStatus).ACTIVE}">Активна кампания</option>
-            <option th:value="${T(app.campaign.model.CampaignStatus).CLOSED}">Затворена кампания</option>
-            <option th:value="${T(app.campaign.model.CampaignStatus).CANCELLED}">Прекратена кампания</option>
-        </select>
-    </label>
-    <label for="creator">
-        <i class="fa-solid fa-user-group fa-2xl"></i>
-        <input type="text" placeholder="Създател" id="creator">
-    </label>
+    <form class="spark-filter-form" th:action="@{/campaigns}" th:method="GET" th:object="${filterData}">
+        <label for="location">
+            <i class="fa-solid fa-location-dot fa-2xl"></i>
+            <input type="text" placeholder="Локация" id="location" name="location" th:field="*{location}">
+        </label>
+        <label for="type">
+            <i class="fa-solid fa-puzzle-piece fa-2xl"></i>
+            <select name="type" id="type" th:field="*{type}">
+                <option value="" selected="selected">Вид</option>
+                <option th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд</option>
+                <option th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи</option>
+                <option th:value="${T(app.campaign.model.CampaignType).FOOD}">Дарение на храна</option>
+                <option th:value="${T(app.campaign.model.CampaignType).SERVICES}">Дарение на услуги</option>
+            </select>
+        </label>
+        <label for="status">
+            <i class="fa-solid fa-heart-pulse fa-2xl"></i>
+            <select name="status" id="status" th:field="*{status}">
+                <option value="" selected="selected">Статус</option>
+                <option th:value="${T(app.campaign.model.CampaignStatus).ACTIVE}">Активна кампания</option>
+                <option th:value="${T(app.campaign.model.CampaignStatus).CLOSED}">Затворена кампания</option>
+                <option th:value="${T(app.campaign.model.CampaignStatus).CANCELLED}">Прекратена кампания</option>
+            </select>
+        </label>
+        <label for="creator">
+            <i class="fa-solid fa-user-group fa-2xl"></i>
+            <input type="text" placeholder="Създател" id="creator" th:field="*{creator}">
+        </label>
+        <button class="btn" type="submit">Търси</button>
+    </form>
 </section>
 <main class="main">
     <section class="campaigns">
@@ -105,15 +108,15 @@
     </section>
     <nav th:if="${campaignsPage.totalPages > 0}" class="pagination-nav">
         <ul class="pagination">
-            <li class="page-item"><a class="page-link" th:href="@{/campaigns(page=${pageNumbers.first})}"><i
+            <li class="page-item"><a class="page-link" th:href="@{'/campaigns?' + ${filterData.toQueryString()}(page=${pageNumbers.first})}"><i
                     class="fas fa-angle-double-left"></i></a></li>
             <li th:each="pageNumber : ${pageNumbers}"
                 th:classappend="${pageNumber==(campaignsPage.number + 1)} ? 'page-item page-active' : 'page-item'">
-                <a th:href="@{/campaigns(page=${pageNumber})}"
+                <a th:href="@{'/campaigns?' + ${filterData.toQueryString()}(page=${pageNumber})}"
                    th:text="${pageNumber}"
                    class="page-link"></a>
             </li>
-            <li class="page-item"><a class="page-link" th:href="@{/campaigns(page=${pageNumbers.last})}"><i
+            <li class="page-item"><a class="page-link" th:href="@{'/campaigns?' + ${filterData.toQueryString()}(page=${pageNumbers.last})}"><i
                     class="fas fa-angle-double-right"></i></a></li>
         </ul>
     </nav>

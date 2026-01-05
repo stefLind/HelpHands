@@ -6,6 +6,7 @@ import app.security.AuthenticationMetadata;
 import app.user.model.User;
 import app.user.service.UserService;
 import app.web.dto.CampaignCreationRequest;
+import app.web.dto.CampaignFilterData;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,7 +39,12 @@ public class CampaignController {
     }
 
     @GetMapping("/campaigns")
-    public ModelAndView getCampaignsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @RequestParam("page") Optional<Integer> page) {
+    public ModelAndView getCampaignsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata
+            , @RequestParam("page") Optional<Integer> page
+            , @RequestParam(name = "status", required = false) String status
+            , @RequestParam(name = "type", required = false) String type
+            , @RequestParam(name = "creator", required = false) String creator
+            , @RequestParam(name = "location", required = false) String location) {
         ModelAndView modelAndView = new ModelAndView();
         int currentPage = page.orElse(1);
 
@@ -48,8 +54,10 @@ public class CampaignController {
             modelAndView.addObject("user", user);
         }
 
-        Page<Campaign> campaignPage = campaignService.getCampaignsPage(currentPage);
+        CampaignFilterData campaignFilterData = new CampaignFilterData(status, type, creator, location);
+        Page<Campaign> campaignPage = campaignService.getCampaignsPage(currentPage, campaignFilterData);
         modelAndView.addObject("campaignsPage", campaignPage);
+        modelAndView.addObject("filterData", campaignFilterData);
 
         int totalPages = campaignPage.getTotalPages();
         if (totalPages > 0) {

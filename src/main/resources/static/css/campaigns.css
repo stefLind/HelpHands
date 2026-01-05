@@ -7,6 +7,10 @@
     padding: 20px 40px;
 }
 
+.spark-filter-form {
+    display: contents;
+}
+
 .filters label {
     display: inline-block;
     vertical-align: middle;
