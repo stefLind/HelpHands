@@ -60,7 +60,7 @@
 </section>
 <main class="main">
     <section class="campaigns">
-        <article class="campaign" th:each="campaign : ${campaignsPage.content}">
+        <article class="campaign" th:if="${campaignsPage.totalPages > 0}" th:each="campaign : ${campaignsPage.content}">
             <header class="campaign-header">
                 <span th:if="${campaign.type.name() == 'LABOR'}">Труд</span>
                 <span th:if="${campaign.type.name() == 'SERVICES'}">Услуги</span>
@@ -105,10 +105,14 @@
                 </article>
             </footer>
         </article>
+        <section class="campaign-not-found" th:unless="${campaignsPage.totalPages > 0}">
+            <h3>Няма намерени резултати за това търсене!</h3>
+        </section>
     </section>
     <nav th:if="${campaignsPage.totalPages > 0}" class="pagination-nav">
         <ul class="pagination">
-            <li class="page-item"><a class="page-link" th:href="@{'/campaigns?' + ${filterData.toQueryString()}(page=${pageNumbers.first})}"><i
+            <li class="page-item"><a class="page-link"
+                                     th:href="@{'/campaigns?' + ${filterData.toQueryString()}(page=${pageNumbers.first})}"><i
                     class="fas fa-angle-double-left"></i></a></li>
             <li th:each="pageNumber : ${pageNumbers}"
                 th:classappend="${pageNumber==(campaignsPage.number + 1)} ? 'page-item page-active' : 'page-item'">
@@ -116,7 +120,8 @@
                    th:text="${pageNumber}"
                    class="page-link"></a>
             </li>
-            <li class="page-item"><a class="page-link" th:href="@{'/campaigns?' + ${filterData.toQueryString()}(page=${pageNumbers.last})}"><i
+            <li class="page-item"><a class="page-link"
+                                     th:href="@{'/campaigns?' + ${filterData.toQueryString()}(page=${pageNumbers.last})}"><i
                     class="fas fa-angle-double-right"></i></a></li>
         </ul>
     </nav>

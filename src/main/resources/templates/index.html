@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/campaigns.css">
 </head>
 <body>
 
@@ -29,138 +30,55 @@
     </p>
 </section>
 
-<section class="filters">
-    <label for="location">
-        <i class="fa-solid fa-location-dot fa-2xl"></i>
-        <input type="text" placeholder="Локация" id="location">
-    </label>
-    <label for="type">
-        <i class="fa-solid fa-puzzle-piece fa-2xl"></i>
-        <select name="type" id="type">
-            <option value="" selected="selected">Вид</option>
-            <option th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд</option>
-            <option th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи</option>
-            <option th:value="${T(app.campaign.model.CampaignType).FOOD}">Дарение на храна</option>
-            <option th:value="${T(app.campaign.model.CampaignType).SERVICES}">Дарение на услуги</option>
-        </select>
-    </label>
-    <label for="status">
-        <i class="fa-solid fa-heart-pulse fa-2xl"></i>
-        <select name="type" id="status">
-            <option value="" selected="selected">Статус</option>
-            <option th:value="${T(app.campaign.model.CampaignStatus).ACTIVE}" selected>Активна кампания</option>
-            <option th:value="${T(app.campaign.model.CampaignStatus).CLOSED}">Затворена кампания</option>
-            <option th:value="${T(app.campaign.model.CampaignStatus).CANCELLED}">Прекратена кампания</option>
-        </select>
-    </label>
-    <label for="creator">
-        <i class="fa-solid fa-user-group fa-2xl"></i>
-        <input type="text" placeholder="Създател" id="creator">
-    </label>
+<section class="banner">
+    <i class="fa-solid fa-hand-holding-heart fa-2xl"></i>
+    <h3>Разгледайте нашите най-нови кампании</h3>
+    <i class="fa-solid fa-hand-holding-heart fa-2xl fa-flip-horizontal"></i>
 </section>
 
 <section class="campaigns">
-    <article class="campaign">
+    <article class="campaign" th:each="campaign : ${lastThreeActiveCampaigns}">
         <header class="campaign-header">
-            <span>
-                Труд
-            </span>
-            <h3>
-                Помощ за почистване на Витоша
-            </h3>
+            <span th:if="${campaign.type.name() == 'LABOR'}">Труд</span>
+            <span th:if="${campaign.type.name() == 'SERVICES'}">Услуги</span>
+            <span th:if="${campaign.type.name() == 'FOOD'}">Храна</span>
+            <span th:if="${campaign.type.name() == 'THINGS'}">Вещи</span>
+            <h3 th:text="${campaign.title}"></h3>
         </header>
         <article class="campaign-details">
+                <span class="campaign-detail">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span th:text="${#temporals.format(campaign.startDate, 'dd.MM.yyyy')}"></span>
+                </span>
             <span class="campaign-detail">
-                <i class="fa-solid fa-calendar-days"></i>
-                16 август 2025
-            </span>
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span th:with="duration=${T(app.util.DateUtil).getDateTimeDiffInHours(campaign.startDate, campaign.startTime, campaign.getEndDate(), campaign.endTime)}"
+                          th:text="${duration < 24 ? (duration > 1 ? duration + ' часа' : duration + ' час') : (T(app.util.DateUtil).getDays(duration) > 1 ? T(app.util.DateUtil).getDays(duration) + ' дни' : '1 ден')}"></span>
+                </span>
+            <span class="campaign-detail"
+                  th:if="${campaign.type.name() == 'LABOR' || campaign.type.name() == 'SERVICES'}">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span th:text="${campaign.peopleNeeded > 1 ? campaign.peopleNeeded + ' човека' : campaign.peopleNeeded + ' човек'}"></span>
+                </span>
+            <span class="campaign-detail" th:if="${campaign.type.name() == 'FOOD'}">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span th:text="${campaign.foodNeeded}"></span>
+                </span>
+            <span class="campaign-detail" th:if="${campaign.type.name() == 'THINGS'}">
+                    <i class="fa-solid fa-shirt"></i>
+                    <span th:text="${campaign.thingsNeeded}"></span>
+                </span>
             <span class="campaign-detail">
-                <i class="fa-solid fa-stopwatch"></i>
-                4 часа
-            </span>
-            <span class="campaign-detail">
-                <i class="fa-solid fa-user-group"></i>
-                10 човека
-            </span>
-            <span class="campaign-detail">
-                <i class="fa-solid fa-location-dot"></i>
-                гр. София
-            </span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span th:text="${campaign.location}"></span>
+                </span>
         </article>
         <footer class="campaign-footer">
             <article>
-                <button class="btn" onclick="location.href='visitCampaign.html'">Към кампанията</button>
+                <a th:href="@{'/campaign/' + ${campaign.id}}" class="btn">Към кампанията</a>
             </article>
             <article class="campaign-time-left">
-                <span>Остава 1 ден</span>
-            </article>
-        </footer>
-    </article>
-    <article class="campaign">
-        <header class="campaign-header">
-            <span>
-                Услуги
-            </span>
-            <h3>
-                Правна помощ за дом за деца
-            </h3>
-        </header>
-        <article class="campaign-details">
-            <span class="campaign-detail">
-                <i class="fa-solid fa-calendar-days"></i>
-                16 август 2025
-            </span>
-            <span class="campaign-detail">
-                <i class="fa-solid fa-stopwatch"></i>
-                2 часа
-            </span>
-            <span class="campaign-detail">
-                <i class="fa-solid fa-user-group"></i>
-                1 човек
-            </span>
-            <span class="campaign-detail">
-                <i class="fa-solid fa-location-dot"></i>
-                Онлайн
-            </span>
-        </article>
-        <footer class="campaign-footer">
-            <article>
-                <button class="btn" onclick="location.href='visitCampaign.html'">Към кампанията</button>
-            </article>
-            <article class="campaign-time-left">
-                <span>Остават 30 дни</span>
-            </article>
-        </footer>
-    </article>
-    <article class="campaign">
-        <header class="campaign-header">
-            <span>
-                Храна
-            </span>
-            <h3>
-                Дом за възрастни хора - Нужда от храна
-            </h3>
-        </header>
-        <article class="campaign-details">
-            <span class="campaign-detail">
-                <i class="fa-solid fa-calendar-days"></i>
-                до 16 август 2025
-            </span>
-            <span class="campaign-detail">
-                <i class="fa-solid fa-utensils"></i>
-                Хляб, ориз, леща и др.
-            </span>
-            <span class="campaign-detail">
-                <i class="fa-solid fa-location-dot"></i>
-                гр. Перник
-            </span>
-        </article>
-        <footer class="campaign-footer">
-            <article>
-                <button class="btn" onclick="location.href='visitCampaign.html'">Към кампанията</button>
-            </article>
-            <article class="campaign-time-left">
-                <span>Остават 10 дни</span>
+                <span th:text="${'Остават ' + T(app.util.DateUtil).getDateDiffFromNowInDays(campaign.startDate) + ' дни'}"></span>
             </article>
         </footer>
     </article>
@@ -207,7 +125,7 @@
                     lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna aliqua.
                 </p>
-                <a th:href="@{/}" class="btn">Кандидатствай за кампания</a>
+                <a th:href="@{/campaigns}" class="btn">Кандидатствай за кампания</a>
             </article>
         </article>
     </article>

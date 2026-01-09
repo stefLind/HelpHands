@@ -1,5 +1,7 @@
 package app.web;
 
+import app.campaign.model.Campaign;
+import app.campaign.service.CampaignService;
 import app.security.AuthenticationMetadata;
 import app.user.model.User;
 import app.user.service.UserService;
@@ -15,14 +17,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 public class IndexController {
 
     UserService userService;
+    CampaignService campaignService;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, CampaignService campaignService) {
         this.userService = userService;
+        this.campaignService = campaignService;
     }
 
     @GetMapping("/")
@@ -32,6 +38,10 @@ public class IndexController {
             User user = userService.getUserById(authenticationMetadata.getUserId());
             modelAndView.addObject("user", user);
         }
+
+        List<Campaign> lastThreeActiveCampaigns = campaignService.getLastThreeActiveCampaigns();
+        modelAndView.addObject("lastThreeActiveCampaigns", lastThreeActiveCampaigns);
+
         return modelAndView;
     }
 

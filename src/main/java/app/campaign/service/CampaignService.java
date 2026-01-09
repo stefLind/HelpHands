@@ -81,14 +81,21 @@ public class CampaignService {
     private List<Campaign> filterCampaigns(String status, String type, String creator, String location) {
         List<Campaign> campaigns;
         if (StringUtil.isAllNullOrBlank(status, type, creator, location)) {
-            campaigns = getAllActiveCampaigns();
+            campaigns = getAllCampaigns();
         } else {
             campaigns = campaignRepository.findByFilterCriteria(status, type, creator, location);
         }
         return campaigns;
     }
 
-    private List<Campaign> getAllActiveCampaigns() {
-        return campaignRepository.findAllByStatusOrderByCreatedOnDesc(CampaignStatus.ACTIVE);
+    private List<Campaign> getAllCampaigns() {
+        return campaignRepository.findAll();
+    }
+
+    public List<Campaign> getLastThreeActiveCampaigns() {
+        return campaignRepository.findAllByStatusOrderByCreatedOnDesc(CampaignStatus.ACTIVE)
+                .stream()
+                .limit(3)
+                .toList();
     }
 }

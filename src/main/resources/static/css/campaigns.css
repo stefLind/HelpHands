@@ -46,6 +46,26 @@
     margin: 50px auto;
 }
 
+.campaign-not-found {
+    margin: 80px;
+    box-shadow: 0 2px 4px -1px slategrey;
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #ffbf46;
+    color: #062c51;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.campaign-not-found h3 {
+    text-align: center;
+    padding: 30px;
+    font-size: 20px;
+}
+
 .campaign {
     margin: 20px;
     box-shadow: 0 2px 4px -1px slategrey;

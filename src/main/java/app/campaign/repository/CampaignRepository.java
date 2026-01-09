@@ -17,7 +17,7 @@ public interface CampaignRepository extends JpaRepository<Campaign, UUID> {
 
     // Custom query to filter the data
     // lanuage=MySQL
-    @Query(value = "select c.* from campaign c, user u where c.creator_id = u.id and (%:status% is null or c.status = %:status%) and (%:type% is null or c.type = %:type%) and (%:creator% is null or u.first_name like %:creator% or u.company_name like %:creator%) and (%:location% is null or c.location like %:location%)", nativeQuery = true)
+    @Query(value = "select c.* from campaign c, user u where c.creator_id = u.id and (%:status% is null or c.status = %:status%) and (%:type% is null or c.type = %:type%) and (%:creator% is null or u.first_name like %:creator% or u.company_name like %:creator%) and (%:location% is null or c.location like %:location%) order by c.created_on desc", nativeQuery = true)
     List<Campaign> findByFilterCriteria(@Param("status") String status, @Param("type") String type, @Param("creator") String creator, @Param("location") String location);
 
 }
