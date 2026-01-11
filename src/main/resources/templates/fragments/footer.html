@@ -25,7 +25,7 @@
                     <a th:href="@{/campaign/new}">Създай кампания</a>
                 </li>
                 <li>
-                    <a href="#">Направи дарение</a>
+                    <a th:href="@{/campaigns}">Направи дарение</a>
                 </li>
                 <li>
                     <a th:if="${user ne null}" th:href="@{'/users/' + ${user.id} + '/profile'}">Твоят профил</a>

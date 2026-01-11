@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -98,5 +99,19 @@ public class CampaignController {
         campaignService.createCampaign(user, campaignCreationRequest, file);
 
         return new ModelAndView("redirect:/campaigns");
+    }
+
+    @GetMapping("/campaign/{id}")
+    public ModelAndView getCampaignPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @PathVariable UUID id) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+        Campaign campaign = campaignService.getCampaignById(id);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("campaign");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("campaign", campaign);
+        modelAndView.addObject("daysLeftPercentage", campaignService.getDaysLeftAsPercentage(campaign));
+
+        return modelAndView;
     }
 }

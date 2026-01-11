@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Campaign</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/campaign.css">
+</head>
+<body>
+
+<header th:replace="~{fragments/navigation-bar.html :: header}"></header>
+
+<section class="introduction">
+    <h1>Нашите кампании</h1>
+    <p>
+        Подайте ръка и дарете доброта!
+    </p>
+</section>
+
+<main class="main">
+    <section class="main-section">
+        <article class="left-column">
+            <article class="donation-info">
+                <header class="donation-info-header">
+                    <img alt="" class="campaign-img"
+                         th:src="${#arrays.isEmpty(campaign.pictureData) ? '/images/holdingHands.png' : 'data:image/jpeg;base64,' + campaign.generateBase64Image()}">
+                    <section class="donation-info-text">
+                        <span class="campaign-detail">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span th:text="${'Последно променяна на: ' + #temporals.format(campaign.updatedOn, 'dd.MM.yyyy')}"></span>
+                        </span>
+                        <span class="campaign-detail">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span th:text="${campaign.location}"></span>
+                        </span>
+                    </section>
+                    <h2 th:text="${campaign.title}">Помогнете на хората в беда!</h2>
+                </header>
+                <article class="campaign-content">
+                    <p th:text="${campaign.description}"></p>
+                    <button class="campaign-btn" onclick="togglePopup()">
+                        Кандидатствай
+                    </button>
+                </article>
+            </article>
+        </article>
+        <article class="right-column">
+            <article class="statistics">
+                <h2>Информация</h2>
+                <section th:if="${campaign.peopleNeeded > 0}" class="progress-section">
+                    <span>Кандидатствали: 20 </span>
+                    <span class="float-right" th:text="'Цел: ' + ${campaign.peopleNeeded}"></span>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="87" style="width: 87%;"></div>
+                    </div>
+                    <span>Постигнати: 87%</span>
+                </section>
+                <section th:unless="${campaign.peopleNeeded > 0}" class="progress-section">
+                    <span th:text="'Дата: ' + ${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}"></span>
+                    <span class="float-right"
+                          th:text="'Край : ' + ${#temporals.format(campaign.startDate, 'dd.MM.yyyy')}"></span>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" data-width="87"
+                             th:style="'width: ' + ${daysLeftPercentage} + '%;'"></div>
+                    </div>
+                    <span th:text="${'Оставащи дни: ' + T(app.util.DateUtil).getDateDiffFromNowInDays(campaign.startDate)}"></span>
+                </section>
+                <button class="campaign-btn" onclick="togglePopup()">
+                    Кандидатствай
+                </button>
+            </article>
+            <section class="helper-information">
+                <h3>Последно кандидатствали</h3>
+                <section class="helper">
+                    <img src="/images/avatar_small.png" alt="Avatar" class="avatar">
+                    <ul class="helper-info-text">
+                        <li>Коти Кот</li>
+                        <li><i class="fa-solid fa-calendar-days"></i>
+                            Кандидатствал на: 01.08.2025
+                        </li>
+                    </ul>
+                </section>
+                <section class="helper">
+                    <img src="/images/avatar_small.png" alt="Avatar" class="avatar">
+                    <ul class="helper-info-text">
+                        <li>Коти Кот</li>
+                        <li><i class="fa-solid fa-calendar-days"></i>
+                            Кандидатствал на: 01.08.2025
+                        </li>
+                    </ul>
+                </section>
+                <section class="helper">
+                    <img src="/images/avatar_small.png" alt="Avatar" class="avatar">
+                    <ul class="helper-info-text">
+                        <li>Коти Кот</li>
+                        <li><i class="fa-solid fa-calendar-days"></i>
+                            Кандидатствал на: 01.08.2025
+                        </li>
+                    </ul>
+                </section>
+            </section>
+        </article>
+    </section>
+</main>
+
+<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
+
+<div id="popupOverlay" class="overlay-container">
+    <div class="popup-box">
+        <h2>Заяви участие</h2>
+        <form class="form-container">
+            <label for="reason-input">Причини за участие:
+                <textarea name="reason-input" id="reason-input" cols="30" rows="8"
+                          placeholder="Напишете кратко съобщение на създателите на кампанията защо и с какво искте да участвате"
+                          required></textarea>
+            </label>
+
+            <button class="btn-submit-popup" type="submit">
+                Кандидатствай
+            </button>
+        </form>
+        <button class="btn-close-popup" onclick="togglePopup()">
+            Затвори
+        </button>
+    </div>
+</div>
+
+<script>
+    function togglePopup() {
+        const overlay = document.getElementById('popupOverlay');
+        overlay.classList.toggle('show');
+    }
+</script>
+
+</body>
+</html>

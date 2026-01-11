@@ -3,7 +3,9 @@ package app.campaign.service;
 import app.campaign.model.Campaign;
 import app.campaign.model.CampaignStatus;
 import app.campaign.repository.CampaignRepository;
+import app.exception.DomainException;
 import app.user.model.User;
+import app.util.DateUtil;
 import app.util.StringUtil;
 import app.web.dto.CampaignCreationRequest;
 import app.web.dto.CampaignFilterData;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -97,5 +100,22 @@ public class CampaignService {
                 .stream()
                 .limit(3)
                 .toList();
+    }
+
+    public Campaign getCampaignById(UUID id) {
+        return campaignRepository.findById(id).orElseThrow(() -> new DomainException("Campaign with id [" + id + "] not found."));
+    }
+
+    public long getDaysLeftAsPercentage(Campaign campaign) {
+        long percent = 100L;
+        long daysLeft = DateUtil.getDateDiffFromNowInDays(campaign.getStartDate());
+
+        if (daysLeft <= 0) {
+            return percent;
+        } else if (daysLeft >= percent) {
+            return 1L;
+        } else {
+            return percent - daysLeft;
+        }
     }
 }

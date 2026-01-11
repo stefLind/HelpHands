@@ -1,0 +1,227 @@
+.main {
+    line-height: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 120px 0;
+}
+
+.main-section {
+    max-width: 1140px;
+    width: 100%;
+    padding: 0 15px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+}
+
+.left-column {
+    max-width: 66.666667%;
+    padding: 0 35px 0 20px;
+}
+
+.right-column {
+    padding: 0 18px;
+    max-width: 33.333333%;
+    box-shadow: 0 5px 30px 0 rgba(214, 215, 216, 0.57);
+}
+
+.donation-info-header {
+    display: block;
+    justify-content: center;
+    padding: 0;
+    box-shadow: none;
+}
+
+.campaign-img {
+    width: 100%;
+    height: 150%;
+    margin-bottom: 18px;
+    max-width: 100%;
+}
+
+.donation-info-text {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding: 0 10px;
+}
+
+.helper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    border-bottom: 1px dashed #cccccc;
+    margin: 30px 0;
+    padding-bottom: 15px;
+}
+
+.helper-information h3 {
+    padding-top: 10px;
+}
+
+.helper img {
+    padding-right: 10px;
+}
+
+.btn-submit-popup, .campaign-btn:hover {
+    background-color: #e8254d;
+    border: 2px solid #e8254d;
+    color: white;
+    border-radius: 15px;
+    padding: 12px 16px;
+    text-transform: uppercase;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 8px -1px #ccc;
+}
+
+.campaign-btn, .btn-submit-popup:hover {
+    border: 2px solid #e8254d;
+    background: rgb(232, 37, 77, 0.1);
+    border-radius: 15px;
+    padding: 12px 16px;
+    text-transform: uppercase;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    box-shadow: 0 6px 8px -1px #ccc;
+    color: black;
+}
+
+.statistics {
+    border-bottom: 1px solid #e7e7e7;
+    padding: 25px 0;
+}
+
+.statistics h2 {
+    padding-bottom: 12px;
+}
+
+.progress-section {
+    margin-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+    font-size: .80rem;
+    font-weight: bold;
+    color: #062c51;
+}
+
+.float-right {
+    float: right;
+}
+
+.progress {
+    background-color: lightgrey;
+    border-radius: .25rem;
+    height: 5px;
+}
+
+.progress-bar {
+    background: #3bcf93;
+    height: 5px;
+}
+
+/*popup start*/
+.overlay-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.popup-box {
+    border: 4px solid #3bcf93;
+    background: #fff;
+    padding: 34px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    width: 460px;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.popup-box h2 {
+    color: #062c51;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container label {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #444;
+    text-align: left;
+}
+
+.form-container label textarea {
+    resize: vertical;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+.btn-submit-popup,
+.btn-close-popup {
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-submit-popup:hover {
+    border-radius: 8px;
+}
+
+.btn-close-popup {
+    margin-top: 12px;
+    background-color: grey;
+    color: white;
+}
+
+.btn-close-popup:hover {
+    border: 2px solid #3bcf93;
+    background-color: rgb(59, 207, 147, 0.1);
+    color: black;
+}
+
+/* Keyframes for fadeInUp animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Animation for popup */
+.overlay-container.show {
+    display: flex;
+    opacity: 1;
+}
+
+/*popup end*/
