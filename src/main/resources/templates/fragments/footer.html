@@ -28,6 +28,9 @@
                     <a th:href="@{/campaigns}">Направи дарение</a>
                 </li>
                 <li>
+                    <a th:href="@{/my-donations}">Моите дарения</a>
+                </li>
+                <li>
                     <a th:if="${user ne null}" th:href="@{'/users/' + ${user.id} + '/profile'}">Твоят профил</a>
                     <a th:unless="${user ne null}" th:href="@{/login}">Твоят профил</a>
                 </li>

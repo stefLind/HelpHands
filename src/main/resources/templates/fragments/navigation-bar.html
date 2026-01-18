@@ -20,9 +20,6 @@
                 <a class="nav-link" th:href="@{/campaigns}">Кампании</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Новини</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="#">Контакти</a>
             </li>
             <li class="nav-item login-nav-item">
@@ -34,7 +31,8 @@
                     <div class="dropdown-content">
                         <a th:href="@{'/users/' + ${user.id} + '/profile'}">Моят профил</a>
                         <a th:href="@{/campaigns}">Кампании</a>
-                        <a href="#">Заявки за участия</a>
+                        <a th:href="@{/donations}">Заявки за дарения</a>
+                        <a th:href="@{/my-donations}">Моите дарения</a>
                         <a th:href="@{/logout}">Изход</a>
                     </div>
                 </div>

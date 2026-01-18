@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CampaignFilterData {
 
-    String status;
+    private String status;
 
-    String type;
+    private String type;
 
-    String creator;
+    private String creator;
 
-    String location;
+    private String location;
 
     public CampaignFilterData(String status, String type, String creator, String location) {
         this.status = StringUtil.isNullOrBlank(status) ? null : status;

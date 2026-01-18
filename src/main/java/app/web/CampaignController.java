@@ -2,11 +2,14 @@ package app.web;
 
 import app.campaign.model.Campaign;
 import app.campaign.service.CampaignService;
+import app.donation.model.Donation;
+import app.donation.service.DonationService;
 import app.security.AuthenticationMetadata;
 import app.user.model.User;
 import app.user.service.UserService;
 import app.web.dto.CampaignCreationRequest;
 import app.web.dto.CampaignFilterData;
+import app.web.dto.DonationRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,11 +35,13 @@ public class CampaignController {
 
     private final UserService userService;
     private final CampaignService campaignService;
+    private final DonationService donationService;
 
     @Autowired
-    public CampaignController(UserService userService, CampaignService campaignService) {
+    public CampaignController(UserService userService, CampaignService campaignService, DonationService donationService) {
         this.userService = userService;
         this.campaignService = campaignService;
+        this.donationService = donationService;
     }
 
     @GetMapping("/campaigns")
@@ -105,11 +110,19 @@ public class CampaignController {
     public ModelAndView getCampaignPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @PathVariable UUID id) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
         Campaign campaign = campaignService.getCampaignById(id);
+        List<Donation> donations = campaign.getDonations();
+        List<Donation> lastThreeDonations = donations.stream()
+                .limit(3)
+                .toList();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("campaign");
         modelAndView.addObject("user", user);
         modelAndView.addObject("campaign", campaign);
+        modelAndView.addObject("donationRequest", new DonationRequest());
+        modelAndView.addObject("lastThreeDonations", lastThreeDonations);
+        modelAndView.addObject("allDonations", donations.size());
+        modelAndView.addObject("participantsPercentage", donationService.getPercentageOfParticipants(campaign.getPeopleNeeded(), donations.size()));
         modelAndView.addObject("daysLeftPercentage", campaignService.getDaysLeftAsPercentage(campaign));
 
         return modelAndView;

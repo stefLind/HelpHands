@@ -1,5 +1,6 @@
 package app.campaign.model;
 
+import app.donation.model.Donation;
 import app.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,7 +8,9 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -67,6 +70,10 @@ public class Campaign {
 
     @Column(nullable = false)
     private LocalDateTime updatedOn;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "campaign")
+    @OrderBy("createdOn DESC")
+    private List<Donation> donations = new ArrayList<>();
 
     @Lob
     @Column(length = Integer.MAX_VALUE)

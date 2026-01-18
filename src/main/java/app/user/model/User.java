@@ -1,6 +1,7 @@
 package app.user.model;
 
 import app.campaign.model.Campaign;
+import app.donation.model.Donation;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -73,6 +74,9 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "creator")
     private List<Campaign> campaigns = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    private List<Donation> donations = new ArrayList<>();
 
     public String generateBase64Image() {
         return Base64.getEncoder().encodeToString(this.profilePictureData);

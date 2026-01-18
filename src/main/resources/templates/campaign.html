@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Campaign</title>
+    <title>Кампании</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/campaign.css">
+    <link rel="stylesheet" href="/css/common-popup.css">
+    <script src="/js/main.js"></script>
 </head>
 <body>
 
@@ -46,7 +48,7 @@
                 </header>
                 <article class="campaign-content">
                     <p th:text="${campaign.description}"></p>
-                    <button class="campaign-btn" onclick="togglePopup()">
+                    <button class="campaign-btn" onclick="togglePopup('popupOverlay')">
                         Кандидатствай
                     </button>
                 </article>
@@ -55,15 +57,16 @@
         <article class="right-column">
             <article class="statistics">
                 <h2>Информация</h2>
-                <section th:if="${campaign.peopleNeeded > 0}" class="progress-section">
-                    <span>Кандидатствали: 20 </span>
+                <section th:if="${campaign.peopleNeeded ne null and campaign.peopleNeeded > 0}" class="progress-section">
+                    <span th:text="'Кандидатствали: ' + ${allDonations}"> </span>
                     <span class="float-right" th:text="'Цел: ' + ${campaign.peopleNeeded}"></span>
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" data-width="87" style="width: 87%;"></div>
+                        <div class="progress-bar" role="progressbar" data-width="87"
+                             th:style="'width: ' + ${participantsPercentage} + '%;'"></div>
                     </div>
-                    <span>Постигнати: 87%</span>
+                    <span th:text="'Постигнати: ' + ${participantsPercentage} + '%'"> </span>
                 </section>
-                <section th:unless="${campaign.peopleNeeded > 0}" class="progress-section">
+                <section th:unless="${campaign.peopleNeeded ne null and campaign.peopleNeeded > 0}" class="progress-section">
                     <span th:text="'Дата: ' + ${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}"></span>
                     <span class="float-right"
                           th:text="'Край : ' + ${#temporals.format(campaign.startDate, 'dd.MM.yyyy')}"></span>
@@ -73,36 +76,19 @@
                     </div>
                     <span th:text="${'Оставащи дни: ' + T(app.util.DateUtil).getDateDiffFromNowInDays(campaign.startDate)}"></span>
                 </section>
-                <button class="campaign-btn" onclick="togglePopup()">
+                <button class="campaign-btn" onclick="togglePopup('popupOverlay')">
                     Кандидатствай
                 </button>
             </article>
             <section class="helper-information">
                 <h3>Последно кандидатствали</h3>
-                <section class="helper">
-                    <img src="/images/avatar_small.png" alt="Avatar" class="avatar">
+                <section class="helper" th:each="donation : ${lastThreeDonations}">
+                    <img th:src="${#arrays.isEmpty(donation.owner.profilePictureData) ? '/images/avatar_small.png' : 'data:image/jpeg;base64,' + donation.owner.generateBase64Image()}"
+                         alt="Avatar" class="avatar">
                     <ul class="helper-info-text">
-                        <li>Коти Кот</li>
+                        <li th:text="${donation.owner.username}"></li>
                         <li><i class="fa-solid fa-calendar-days"></i>
-                            Кандидатствал на: 01.08.2025
-                        </li>
-                    </ul>
-                </section>
-                <section class="helper">
-                    <img src="/images/avatar_small.png" alt="Avatar" class="avatar">
-                    <ul class="helper-info-text">
-                        <li>Коти Кот</li>
-                        <li><i class="fa-solid fa-calendar-days"></i>
-                            Кандидатствал на: 01.08.2025
-                        </li>
-                    </ul>
-                </section>
-                <section class="helper">
-                    <img src="/images/avatar_small.png" alt="Avatar" class="avatar">
-                    <ul class="helper-info-text">
-                        <li>Коти Кот</li>
-                        <li><i class="fa-solid fa-calendar-days"></i>
-                            Кандидатствал на: 01.08.2025
+                            <span th:text="'Кандидатствал на: ' + ${#dates.format(#dates.createNow(), 'dd.MM.yyyy')}"></span>
                         </li>
                     </ul>
                 </section>
@@ -111,14 +97,13 @@
     </section>
 </main>
 
-<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
-
 <div id="popupOverlay" class="overlay-container">
     <div class="popup-box">
         <h2>Заяви участие</h2>
-        <form class="form-container">
+        <form class="form-container" th:action="@{'/' + ${campaign.id} + '/donation/new'}" th:method="post"
+              th:object="${donationRequest}">
             <label for="reason-input">Причини за участие:
-                <textarea name="reason-input" id="reason-input" cols="30" rows="8"
+                <textarea th:field="*{message}" name="reason-input" id="reason-input" cols="30" rows="8"
                           placeholder="Напишете кратко съобщение на създателите на кампанията защо и с какво искте да участвате"
                           required></textarea>
             </label>
@@ -127,18 +112,13 @@
                 Кандидатствай
             </button>
         </form>
-        <button class="btn-close-popup" onclick="togglePopup()">
+        <button class="btn-close-popup" onclick="togglePopup('popupOverlay')">
             Затвори
         </button>
     </div>
 </div>
 
-<script>
-    function togglePopup() {
-        const overlay = document.getElementById('popupOverlay');
-        overlay.classList.toggle('show');
-    }
-</script>
+<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

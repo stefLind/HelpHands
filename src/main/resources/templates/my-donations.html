@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Заявки за дарение</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/donations.css">
+    <link rel="stylesheet" href="/css/common-popup.css">
+    <script src="/js/main.js"></script>
+</head>
+<body>
+<header th:replace="~{fragments/navigation-bar.html :: header}"></header>
+
+<section class="introduction">
+    <h1>Моите заявки за дарения</h1>
+    <p>
+        Търсете в кампаниите, в които сте участвали!
+    </p>
+</section>
+
+<section class="filters">
+    <form class="filter-form" th:action="@{/donations}" th:method="GET" th:object="${filterData}">
+        <label for="request-status">
+            <i class="fa-solid fa-file-waveform fa-2xl"></i>
+            <select name="type" id="request-status" th:field="*{donationStatus}">
+                <option value="" selected="selected">Статус на заявката</option>
+                <option th:value="${T(app.donation.model.DonationStatus).PENDING}">Чакащи заявки</option>
+                <option th:value="${T(app.donation.model.DonationStatus).APPROVED}">Одобрени заявки</option>
+                <option th:value="${T(app.donation.model.DonationStatus).REJECTED}">Отхвърлени заявки</option>
+            </select>
+        </label>
+        <label for="campaign-status">
+            <i class="fa-solid fa-heart-pulse fa-2xl"></i>
+            <select name="type" id="campaign-status" th:field="*{campaignStatus}">
+                <option value="" selected="selected">Статус на кампанията</option>
+                <option th:value="${T(app.campaign.model.CampaignStatus).ACTIVE}">Активни кампании</option>
+                <option th:value="${T(app.campaign.model.CampaignStatus).CLOSED}">Затворени кампании</option>
+                <option th:value="${T(app.campaign.model.CampaignStatus).CANCELLED}">Прекратени кампании</option>
+            </select>
+        </label>
+        <label for="type">
+            <i class="fa-solid fa-puzzle-piece fa-2xl"></i>
+            <select name="type" id="type" th:field="*{campaignType}">
+                <option value="" selected="selected">Вид на кампанията</option>
+                <option th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд</option>
+                <option th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи</option>
+                <option th:value="${T(app.campaign.model.CampaignType).FOOD}">Дарение на храна</option>
+                <option th:value="${T(app.campaign.model.CampaignType).SERVICES}">Дарение на услуги</option>
+            </select>
+        </label>
+        <button class="btn" type="submit">Търси</button>
+    </form>
+</section>
+
+<main class="main">
+    <section class="main-section">
+        <table th:unless="${#lists.isEmpty(donations)}">
+            <tr>
+                <th>Кампания</th>
+                <th>Статус на заявката</th>
+                <th>Статус на кампанията</th>
+            </tr>
+            <tr th:each="donation : ${donations}">
+                <td th:text="${donation.campaign.title}" th:attr="onclick='togglePopup(\'' + ${donation.id} + '\')'">
+                    Помощ за почистване на Витоша
+                </td>
+                <td th:if="${donation.status.name() == 'PENDING'}">
+                    <i class="fa-regular fa-circle-question fa-2xl" title="Чака одобрение"></i></td>
+                <td th:if="${donation.status.name() == 'APPROVED'}">
+                    <i class="fa-regular fa-circle-check fa-2xl" title="Одобрена"></i></td>
+                <td th:if="${donation.status.name() == 'REJECTED'}">
+                    <i class="fa-regular fa-circle-xmark fa-2xl" title="Отхвърлена"></i></td>
+                <td th:if="${donation.campaign.status.name() == 'ACTIVE'}">
+                    <i class="fa-regular fa-circle-check fa-2xl" title="Активна"></i></td>
+                <td th:if="${donation.campaign.status.name() == 'CLOSED'}">
+                    <i class="fa-regular fa-circle-xmark fa-2xl" title="Неактивна"></i></td>
+                <td th:if="${donation.campaign.status.name() == 'CANCELLED'}">
+                    <i class="fa-regular fa-ban fa-2xl" title="Отхвърлена"></i></td>
+            </tr>
+        </table>
+
+        <!--   This will be displayed if no donations are made for the current user     -->
+        <table class="styled-table" th:if="${#lists.isEmpty(donations)}">
+            <thead>
+            <tr>
+                <th>Кампания</th>
+                <th>Статус на заявката</th>
+                <th>Статус на кампанията</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
+
+
+<div th:each="donation : ${donations}" th:attr="id=${donation.id}" class="overlay-container">
+    <div class="popup-box">
+        <h2>Детайли за заявката</h2>
+        <form class="form-container">
+            <label for="campaign-input">Детайли за кампанията:
+                <textarea th:text="${donation.campaign.shortDescription}" name="campaign-input" id="campaign-input"
+                          cols="80" rows="8"
+                          placeholder="Кратко описание на кампанията" disabled contenteditable="false"></textarea>
+            </label>
+            <label for="application-campaign-status">
+                <select name="type" id="application-campaign-status" disabled>
+                    <option th:if="${donation.campaign.status.name() == 'ACTIVE'}"
+                            th:value="${T(app.campaign.model.CampaignStatus).ACTIVE}">Активна кампания
+                    </option>
+                    <option th:if="${donation.campaign.status.name() == 'CLOSED'}"
+                            th:value="${T(app.campaign.model.CampaignStatus).CLOSED}">Затворена кампания
+                    </option>
+                    <option th:if="${donation.campaign.status.name() == 'CANCELLED'}"
+                            th:value="${T(app.campaign.model.CampaignStatus).CANCELLED}">Прекратена кампания
+                    </option>
+                </select>
+            </label>
+            <label for="application-campaign-type">
+                <select name="type" id="application-campaign-type" disabled>
+                    <option th:if="${donation.campaign.type.name() == 'LABOR'}"
+                            th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд
+                    </option>
+                    <option th:if="${donation.campaign.type.name() == 'THINGS'}"
+                            th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи
+                    </option>
+                    <option th:if="${donation.campaign.type.name() == 'FOOD'}"
+                            th:value="${T(app.campaign.model.CampaignType).FOOD}">Дарение на храна
+                    </option>
+                    <option th:if="${donation.campaign.type.name() == 'SERVICES'}"
+                            th:value="${T(app.campaign.model.CampaignType).SERVICES}">Дарение на услуги
+                    </option>
+                </select>
+            </label>
+
+            <label for="reason-input">Причини за участие:
+                <textarea th:text="${donation.message}" name="reason-input" id="reason-input" cols="80" rows="8"
+                          placeholder="Кратко описание защо искте да участвате" disabled
+                          contenteditable="false"></textarea>
+            </label>
+
+            <label for="application-request-status">Статус на заявката:
+                <select name="type" id="application-request-status" disabled>
+                    <option th:if="${donation.status.name() == 'PENDING'}"
+                            th:value="${T(app.donation.model.DonationStatus).PENDING}">Чакаща одобрение
+                    </option>
+                    <option th:if="${donation.status.name() == 'APPROVED'}"
+                            th:value="${T(app.donation.model.DonationStatus).APPROVED}">Одобрена заявка
+                    </option>
+                    <option th:if="${donation.status.name() == 'REJECTED'}"
+                            th:value="${T(app.donation.model.DonationStatus).REJECTED}">Отхвърлена заявка
+                    </option>
+                </select>
+            </label>
+
+        </form>
+        <button class="btn-close-popup" th:attr="onclick='togglePopup(\'' + ${donation.id} + '\')'">
+            Затвори
+        </button>
+    </div>
+</div>
+
+</body>
+</html>

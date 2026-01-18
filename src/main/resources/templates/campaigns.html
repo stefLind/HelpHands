@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Search Campaign</title>
+    <title>Търсене на кампании</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -27,7 +27,7 @@
 </section>
 
 <section class="filters">
-    <form class="spark-filter-form" th:action="@{/campaigns}" th:method="GET" th:object="${filterData}">
+    <form class="filter-form" th:action="@{/campaigns}" th:method="GET" th:object="${filterData}">
         <label for="location">
             <i class="fa-solid fa-location-dot fa-2xl"></i>
             <input type="text" placeholder="Локация" id="location" name="location" th:field="*{location}">
