@@ -107,15 +107,15 @@ public class CampaignService {
     }
 
     public long getDaysLeftAsPercentage(Campaign campaign) {
-        long percent = 100L;
+        long maxPercent = 100L;
         long daysLeft = DateUtil.getDateDiffFromNowInDays(campaign.getStartDate());
 
         if (daysLeft <= 0) {
-            return percent;
-        } else if (daysLeft >= percent) {
+            return maxPercent;
+        } else if (daysLeft >= maxPercent) {
             return 1L;
         } else {
-            return percent - daysLeft;
+            return maxPercent - daysLeft;
         }
     }
 }

@@ -1,0 +1,45 @@
+/*table section*/
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #e8254d;
+    box-shadow: 0 28px 20px 0 rgba(214, 215, 216, 0.57);
+    border-radius: 4px;
+}
+
+th {
+    font-size: 18px;
+    background-color: rgb(232, 37, 77, 0.1);
+}
+
+th, td {
+    text-align: center;
+    padding: 16px;
+}
+
+th:first-child, td:first-child {
+    text-align: left;
+}
+
+th:first-child {
+    width: 50%;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+.fa-circle-check {
+    color: #3bcf93;
+}
+
+.fa-circle-xmark, .fa-ban {
+    color: #e8254d;
+}
+
+.fa-circle-question {
+    color: #ffbf46;
+}
+
+/*end table section*/

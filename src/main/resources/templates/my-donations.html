@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Моите дарение</title>
+    <title>Моите дарения</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/donations.css">
+    <link rel="stylesheet" href="/css/common-table.css">
     <link rel="stylesheet" href="/css/common-popup.css">
     <script src="/js/main.js"></script>
 </head>
@@ -27,7 +28,7 @@
 </section>
 
 <section class="filters">
-    <form class="filter-form" th:action="@{/donations}" th:method="GET" th:object="${filterData}">
+    <form class="filter-form" th:action="@{/my-donations}" th:method="GET" th:object="${filterData}">
         <label for="request-status">
             <i class="fa-solid fa-file-waveform fa-2xl"></i>
             <select name="type" id="request-status" th:field="*{donationStatus}">
@@ -69,9 +70,8 @@
                 <th>Статус на кампанията</th>
             </tr>
             <tr th:each="donation : ${donations}">
-                <td th:text="${donation.campaign.title}" th:attr="onclick='togglePopup(\'' + ${donation.id} + '\')'">
-                    Помощ за почистване на Витоша
-                </td>
+                <td th:text="${donation.campaign.title}"
+                    th:attr="onclick='togglePopup(\'' + ${donation.id} + '\')'"></td>
                 <td th:if="${donation.status.name() == 'PENDING'}">
                     <i class="fa-regular fa-circle-question fa-2xl" title="Чака одобрение"></i></td>
                 <td th:if="${donation.status.name() == 'APPROVED'}">

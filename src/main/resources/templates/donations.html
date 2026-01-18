@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/donations.css">
+    <link rel="stylesheet" href="/css/common-table.css">
     <link rel="stylesheet" href="/css/campaign.css">
     <link rel="stylesheet" href="/css/common-popup.css">
     <script src="/js/main.js"></script>
@@ -74,7 +75,6 @@
             </tr>
             <tr th:each="donation : ${donations}">
                 <td th:text="${donation.campaign.title}" th:attr="onclick='togglePopup(\'' + ${donation.id} + '\')'">
-                    Помощ за почистване на Витоша
                 </td>
                 <td th:if="${donation.status.name() == 'PENDING'}">
                     <i class="fa-regular fa-circle-question fa-2xl" title="Чака одобрение"></i></td>
@@ -117,7 +117,7 @@
 <div th:each="donation : ${donations}" th:attr="id=${donation.id}" class="overlay-container">
     <div class="popup-box">
         <h2>Детайли за заявката</h2>
-        <form class="form-container" th:action="@{'/donation/' + ${donation.id}}" th:method="put" >
+        <form class="form-container" th:action="@{'/donation/' + ${donation.id}}" th:method="put">
             <label for="campaign-input">Детайли за кампанията:
                 <textarea th:text="${donation.campaign.shortDescription}" name="campaign-input" id="campaign-input"
                           cols="80" rows="8"

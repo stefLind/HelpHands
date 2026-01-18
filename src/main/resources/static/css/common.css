@@ -175,7 +175,7 @@ header nav ul {
     vertical-align: middle;
 }
 
-.filters label input, select {
+.filters label input,.filters select {
     border: 1px solid #e8254d;
     border-radius: 4px;
     padding: 12px;

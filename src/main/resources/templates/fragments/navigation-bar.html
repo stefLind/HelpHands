@@ -33,6 +33,7 @@
                         <a th:href="@{/campaigns}">Кампании</a>
                         <a th:href="@{/donations}">Заявки за дарения</a>
                         <a th:href="@{/my-donations}">Моите дарения</a>
+                        <a th:if="${user.type.name() =='COMPANY'}" th:href="@{/users/employees}">Моите служители</a>
                         <a th:href="@{/logout}">Изход</a>
                     </div>
                 </div>

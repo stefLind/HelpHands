@@ -1,12 +1,14 @@
 package app.security;
 
 import app.user.model.UserRole;
+import app.user.model.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -19,13 +21,18 @@ public class AuthenticationMetadata implements UserDetails {
     private String username;
     private String password;
     private UserRole role;
+    private UserType type;
     private boolean isActive;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.name());
+        authorities.add(authority);
+        SimpleGrantedAuthority authorityType = new SimpleGrantedAuthority("ROLE_" + type.name());
+        authorities.add(authorityType);
 
-        return List.of(authority);
+        return authorities;
     }
 
     @Override

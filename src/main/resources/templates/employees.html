@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Моите служители</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+          integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/employees.css">
+    <link rel="stylesheet" href="/css/common-table.css">
+    <link rel="stylesheet" href="/css/common-popup.css">
+    <script src="/js/main.js"></script>
+</head>
+<body>
+<header th:replace="~{fragments/navigation-bar.html :: header}"></header>
+
+<section class="introduction">
+    <h1>Моите служители</h1>
+    <p>
+        Разгледайте всички служители на фирмата, регистрирани в системата ни!
+    </p>
+</section>
+
+<main class="main">
+    <section class="main-section">
+        <table th:unless="${#lists.isEmpty(users)}">
+            <tr>
+                <th>Идентификационен номер</th>
+                <th>Потребителско име</th>
+                <th>Име</th>
+                <th>Презиме</th>
+                <th>Фамилия</th>
+                <th>Мейл</th>
+                <th>Град</th>
+                <th>Статус</th>
+                <th>Създаден на</th>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.surname}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.town}"></td>
+                <td th:if="${user.active}">
+                    <i class="fa-regular fa-circle-check fa-2xl" title="Активен"></i></td>
+                <td th:if="${!user.active}">
+                    <i class="fa-regular fa-circle-xmark fa-2xl" title="Неактивен"></i></td>
+                <td th:text="${#temporals.format(user.createdOn, 'dd.MM.yyyy HH:mm')}"></td>
+            </tr>
+        </table>
+
+        <table class="styled-table" th:if="${#lists.isEmpty(users)}">
+            <!--   This will be displayed if no employees are register for the current user -->
+            <thead>
+            <tr>
+                <th>Идентификационен номер</th>
+                <th>Потребителско име</th>
+                <th>Име</th>
+                <th>Презиме</th>
+                <th>Фамилия</th>
+                <th>Мейл</th>
+                <th>Град</th>
+                <th>Статус</th>
+                <th>Създаден на</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<footer class="footer" th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

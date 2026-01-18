@@ -48,7 +48,10 @@ public class DonationService {
         if (targetParticipants == null || targetParticipants < 1) {
             return 0;
         }
-        return (numberOfParticipants * 100) / targetParticipants;
+        
+        int percentage = (numberOfParticipants * 100) / targetParticipants;
+
+        return Math.min(percentage, 100);
     }
 
     public List<Donation> filterDonations(DonationFilterData filterData, List<Donation> donations) {
