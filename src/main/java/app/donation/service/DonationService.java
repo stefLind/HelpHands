@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,5 +78,21 @@ public class DonationService {
 
     public Donation getDonationById(UUID id) {
         return donationRepository.findById(id).orElseThrow(() -> new DomainException("Donation with id [" + id + "] not found."));
+    }
+
+    public List<Donation> filterDonationsForAllCampaigns(DonationFilterData filterData, List<Campaign> campaigns) {
+        if (campaigns == null || campaigns.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Donation> filteredDonations = new ArrayList<>();
+        campaigns.forEach(campaign -> filteredDonations.addAll(campaign.getDonations()));
+
+        return filterDonations(filterData, filteredDonations);
+    }
+
+    public void changeStatus(Donation donation, DonationStatus status) {
+        donation.setStatus(status);
+        donationRepository.save(donation);
     }
 }

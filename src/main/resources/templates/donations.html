@@ -2,7 +2,7 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <title>Моите дарение</title>
+    <title>Заявки за дарение</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/donations.css">
+    <link rel="stylesheet" href="/css/campaign.css">
     <link rel="stylesheet" href="/css/common-popup.css">
     <script src="/js/main.js"></script>
 </head>
@@ -20,9 +21,12 @@
 <header th:replace="~{fragments/navigation-bar.html :: header}"></header>
 
 <section class="introduction">
-    <h1>Моите заявки за дарения</h1>
+    <h1>Заявки за дарения</h1>
     <p>
-        Търсете в кампаниите, в които сте участвали!
+        Търсете в подадените заявки за участие за Вашите кампании!
+    </p>
+    <p>
+        Можете да одобрявате или отхвърляте кандидатури!
     </p>
 </section>
 
@@ -113,7 +117,7 @@
 <div th:each="donation : ${donations}" th:attr="id=${donation.id}" class="overlay-container">
     <div class="popup-box">
         <h2>Детайли за заявката</h2>
-        <form class="form-container">
+        <form class="form-container" th:action="@{'/donation/' + ${donation.id}}" th:method="put" >
             <label for="campaign-input">Детайли за кампанията:
                 <textarea th:text="${donation.campaign.shortDescription}" name="campaign-input" id="campaign-input"
                           cols="80" rows="8"
@@ -156,19 +160,22 @@
             </label>
 
             <label for="application-request-status">Статус на заявката:
-                <select name="type" id="application-request-status" disabled>
-                    <option th:if="${donation.status.name() == 'PENDING'}"
+                <select th:name="donationStatus" id="application-request-status" required>
+                    <option th:selected="${donation.status.name() == 'PENDING'}"
                             th:value="${T(app.donation.model.DonationStatus).PENDING}">Чакаща одобрение
                     </option>
-                    <option th:if="${donation.status.name() == 'APPROVED'}"
+                    <option th:selectd="${donation.status.name() == 'APPROVED'}"
                             th:value="${T(app.donation.model.DonationStatus).APPROVED}">Одобрена заявка
                     </option>
-                    <option th:if="${donation.status.name() == 'REJECTED'}"
+                    <option th:selected="${donation.status.name() == 'REJECTED'}"
                             th:value="${T(app.donation.model.DonationStatus).REJECTED}">Отхвърлена заявка
                     </option>
                 </select>
             </label>
 
+            <button class="btn-submit-popup" type="submit">
+                Запази
+            </button>
         </form>
         <button class="btn-close-popup" th:attr="onclick='togglePopup(\'' + ${donation.id} + '\')'">
             Затвори

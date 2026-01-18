@@ -21,22 +21,4 @@ public class DonationFilterData {
         this.campaignStatus = StringUtil.isNullOrBlank(campaignStatus) ? null : campaignStatus;
         this.campaignType = StringUtil.isNullOrBlank(campaignType) ? null : campaignType;
     }
-
-    public String toQueryString() {
-        String queryString = "donationStatus=";
-
-        if (StringUtil.isNotNullOrBlank(getDonationStatus())) {
-            queryString += getDonationStatus();
-        }
-        queryString += "&campaignStatus=";
-        if (StringUtil.isNotNullOrBlank(getCampaignStatus())) {
-            queryString += getCampaignStatus();
-        }
-        queryString += "&campaignType=";
-        if (StringUtil.isNotNullOrBlank(getCampaignType())) {
-            queryString += getCampaignType();
-        }
-
-        return queryString;
-    }
 }

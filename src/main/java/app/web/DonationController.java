@@ -3,6 +3,7 @@ package app.web;
 import app.campaign.model.Campaign;
 import app.campaign.service.CampaignService;
 import app.donation.model.Donation;
+import app.donation.model.DonationStatus;
 import app.donation.service.DonationService;
 import app.security.AuthenticationMetadata;
 import app.user.model.User;
@@ -69,5 +70,33 @@ public class DonationController {
 
         return modelAndView;
     }
+
+    @GetMapping("/donations")
+    public ModelAndView getDonationsForAllCampaigns(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata
+            , @RequestParam(name = "donationStatus", required = false) String donationStatus
+            , @RequestParam(name = "campaignStatus", required = false) String campaignStatus
+            , @RequestParam(name = "campaignType", required = false) String campaignType) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+
+        DonationFilterData filterData = new DonationFilterData(donationStatus, campaignStatus, campaignType);
+        List<Donation> donations = donationService.filterDonationsForAllCampaigns(filterData, user.getCampaigns());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("donations");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("donations", donations);
+        modelAndView.addObject("filterData", filterData);
+
+        return modelAndView;
+    }
+
+    @PutMapping("/donation/{id}")
+    public String changeDonationStatus(@PathVariable UUID id, @RequestParam(name = "donationStatus") DonationStatus status) {
+        Donation donation = donationService.getDonationById(id);
+        donationService.changeStatus(donation, status);
+
+        return "redirect:/donations";
+    }
+
 
 }
