@@ -37,52 +37,54 @@
     <i class="fa-solid fa-hand-holding-heart fa-2xl fa-flip-horizontal"></i>
 </section>
 
-<section class="campaigns">
-    <article class="campaign" th:each="campaign : ${lastThreeActiveCampaigns}">
-        <header class="campaign-header">
-            <span th:if="${campaign.type.name() == 'LABOR'}">Труд</span>
-            <span th:if="${campaign.type.name() == 'SERVICES'}">Услуги</span>
-            <span th:if="${campaign.type.name() == 'FOOD'}">Храна</span>
-            <span th:if="${campaign.type.name() == 'THINGS'}">Вещи</span>
-            <h3 th:text="${campaign.title}"></h3>
-        </header>
-        <article class="campaign-details">
+<section class="main-campaign-section">
+    <section class="campaigns">
+        <article class="campaign" th:each="campaign : ${lastThreeActiveCampaigns}">
+            <header class="campaign-header">
+                <span th:if="${campaign.type.name() == 'LABOR'}">Труд</span>
+                <span th:if="${campaign.type.name() == 'SERVICES'}">Услуги</span>
+                <span th:if="${campaign.type.name() == 'FOOD'}">Храна</span>
+                <span th:if="${campaign.type.name() == 'THINGS'}">Вещи</span>
+                <h3 th:text="${campaign.title}"></h3>
+            </header>
+            <article class="campaign-details">
                 <span class="campaign-detail">
                     <i class="fa-solid fa-calendar-days"></i>
                     <span th:text="${#temporals.format(campaign.startDate, 'dd.MM.yyyy')}"></span>
                 </span>
-            <span class="campaign-detail">
+                <span class="campaign-detail">
                     <i class="fa-solid fa-stopwatch"></i>
                     <span th:with="duration=${T(app.util.DateUtil).getDateTimeDiffInHours(campaign.startDate, campaign.startTime, campaign.getEndDate(), campaign.endTime)}"
                           th:text="${duration < 24 ? (duration > 1 ? duration + ' часа' : duration + ' час') : (T(app.util.DateUtil).getDays(duration) > 1 ? T(app.util.DateUtil).getDays(duration) + ' дни' : '1 ден')}"></span>
                 </span>
-            <span class="campaign-detail"
-                  th:if="${campaign.type.name() == 'LABOR' || campaign.type.name() == 'SERVICES'}">
+                <span class="campaign-detail"
+                      th:if="${campaign.type.name() == 'LABOR' || campaign.type.name() == 'SERVICES'}">
                     <i class="fa-solid fa-user-group"></i>
                     <span th:text="${campaign.peopleNeeded > 1 ? campaign.peopleNeeded + ' човека' : campaign.peopleNeeded + ' човек'}"></span>
                 </span>
-            <span class="campaign-detail" th:if="${campaign.type.name() == 'FOOD'}">
+                <span class="campaign-detail" th:if="${campaign.type.name() == 'FOOD'}">
                     <i class="fa-solid fa-utensils"></i>
                     <span th:text="${campaign.foodNeeded}"></span>
                 </span>
-            <span class="campaign-detail" th:if="${campaign.type.name() == 'THINGS'}">
+                <span class="campaign-detail" th:if="${campaign.type.name() == 'THINGS'}">
                     <i class="fa-solid fa-shirt"></i>
                     <span th:text="${campaign.thingsNeeded}"></span>
                 </span>
-            <span class="campaign-detail">
+                <span class="campaign-detail">
                     <i class="fa-solid fa-location-dot"></i>
                     <span th:text="${campaign.location}"></span>
                 </span>
+            </article>
+            <footer class="campaign-footer">
+                <article>
+                    <a th:href="@{'/campaign/' + ${campaign.id}}" class="btn">Към кампанията</a>
+                </article>
+                <article class="campaign-time-left">
+                    <span th:text="${'Остават ' + T(app.util.DateUtil).getDateDiffFromNowInDays(campaign.startDate) + ' дни'}"></span>
+                </article>
+            </footer>
         </article>
-        <footer class="campaign-footer">
-            <article>
-                <a th:href="@{'/campaign/' + ${campaign.id}}" class="btn">Към кампанията</a>
-            </article>
-            <article class="campaign-time-left">
-                <span th:text="${'Остават ' + T(app.util.DateUtil).getDateDiffFromNowInDays(campaign.startDate) + ' дни'}"></span>
-            </article>
-        </footer>
-    </article>
+    </section>
 </section>
 
 <section class="border"></section>
