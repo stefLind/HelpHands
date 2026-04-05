@@ -5,9 +5,7 @@ import app.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -49,15 +47,11 @@ public class Campaign {
     @Column(nullable = false)
     private CampaignType type;
 
-    private LocalTime startTime;
+    @Column(nullable = false)
+    private LocalDateTime startDate;
 
     @Column(nullable = false)
-    private LocalDate startDate;
-
-    private LocalTime endTime;
-
-    @Column(nullable = false)
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     private Integer peopleNeeded;
 

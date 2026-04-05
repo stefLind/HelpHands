@@ -16,6 +16,7 @@ public class DtoMapper {
                 .address(user.getAddress())
                 .email(user.getEmail())
                 .type(user.getType())
+                .companyName(user.getCompanyName())
                 .companyId(user.getCompany() != null ? user.getCompany().getId() : null)
                 .build();
     }

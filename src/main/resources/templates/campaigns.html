@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Търсене на кампании</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-HelpHands-16x16.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -75,7 +76,7 @@
                 </span>
                 <span class="campaign-detail">
                     <i class="fa-solid fa-stopwatch"></i>
-                    <span th:with="duration=${T(app.util.DateUtil).getDateTimeDiffInHours(campaign.startDate, campaign.startTime, campaign.getEndDate(), campaign.endTime)}"
+                    <span th:with="duration=${T(app.util.DateUtil).getDateTimeDiffInHours(campaign.startDate, campaign.getEndDate())}"
                           th:text="${duration < 24 ? (duration > 1 ? duration + ' часа' : duration + ' час') : (T(app.util.DateUtil).getDays(duration) > 1 ? T(app.util.DateUtil).getDays(duration) + ' дни' : '1 ден')}"></span>
                 </span>
                 <span class="campaign-detail"

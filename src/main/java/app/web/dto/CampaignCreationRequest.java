@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -36,13 +36,11 @@ public class CampaignCreationRequest {
 
     private CampaignType type;
 
-    private LocalTime startTime;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime startDate;
 
-    private LocalDate startDate;
-
-    private LocalTime endTime;
-
-    private LocalDate endDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime endDate;
 
     private Integer peopleNeeded;
 

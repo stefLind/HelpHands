@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Създаване на кампания</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-HelpHands-16x16.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -26,7 +27,7 @@
         След това се описва по-детайлно за какво е кампанията и каква помощ се търси.
         В следващото поле се избира от предефиниран списък към кой тип спада кампанията.
         В последните полета се попълва адрес, дата и час на събитието, и колко човека са нужни за кампанията.
-        В полетата за снимки могат да бъдат качени до три снимки за по-добро илюстриране на кампанията и нейната цел.
+        В полето за снимки може да бъде качена снимка за по-добро илюстриране на кампанията и нейната цел.
     </p>
 </section>
 
@@ -83,19 +84,11 @@
             <p class="alert-warning" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
 
             <label for="start-date">Начало на събитието:
-                <input type="date" id="start-date" name="date" th:field="*{startDate}" placeholder="Дата" required>
-            </label>
-
-            <label for="start-time">Начален час на събитието:
-                <input type="time" id="start-time" name="time" th:field="*{startTime}" placeholder="Час" required>
+                <input type="datetime-local" id="start-date" name="date" th:field="*{startDate}" placeholder="Дата и час" required>
             </label>
 
             <label for="end-date">Край на събитието:
-                <input type="date" id="end-date" name="date" th:field="*{endDate}" placeholder="Дата" required>
-            </label>
-
-            <label for="end-time">Краен час на събитието:
-                <input type="time" id="end-time" name="time" th:field="*{endTime}" placeholder="Час" required>
+                <input type="datetime-local" id="end-date" name="date" th:field="*{endDate}" placeholder="Дата и час" required>
             </label>
 
             <label for="people">Брой хора, нужни за кампанията:

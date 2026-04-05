@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-HelpHands-16x16.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -19,7 +20,10 @@
 <main class="main">
     <section class="profile-section">
         <section class="profile-picture-section">
-            <img th:src="${#arrays.isEmpty(user.profilePictureData) ? '/images/avatar_small.png' : 'data:image/jpeg;base64,' + user.generateBase64Image()}"
+            <img th:if="${#arrays.isEmpty(user.profilePictureData)}" th:src="'/images/avatar_small.png'"
+                 alt="Avatar" class="profile-picture avatar">
+            <img th:unless="${#arrays.isEmpty(user.profilePictureData)}" src="data:image/jpeg;base64,"
+                 th:attrappend="src=${user.generateBase64Image()}"
                  alt="Avatar" class="profile-picture avatar">
             <ul>
                 <li class="profile-name">

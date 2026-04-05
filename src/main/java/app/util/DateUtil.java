@@ -2,31 +2,26 @@ package app.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeUnit;
 
 @UtilityClass
 public class DateUtil {
 
-    public static long getDateDiffFromNowInDays(LocalDate startDate) {
-        if (startDate.isBefore(LocalDate.now())) {
+    public static long getDateDiffFromNowInDays(LocalDateTime startDate) {
+        if (startDate.isBefore(LocalDateTime.now())) {
             return 0;
         }
-        return ChronoUnit.DAYS.between(LocalDate.now(), startDate);
+        return ChronoUnit.DAYS.between(LocalDateTime.now(), startDate);
     }
 
-    public static long getDateTimeDiffInHours(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
-        if (startDate == null || startTime == null || endDate == null || endTime == null || startDate.isAfter(endDate)) {
+    public static long getDateTimeDiffInHours(LocalDateTime startDate, LocalDateTime endDate) {
+        if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
             return 0;
         }
 
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
-
-        return ChronoUnit.HOURS.between(startDateTime, endDateTime);
+        return ChronoUnit.HOURS.between(startDate, endDate);
     }
 
     public long getDays(long hours) {

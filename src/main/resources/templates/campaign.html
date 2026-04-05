@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Кампании</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-HelpHands-16x16.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
           integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
           crossorigin="anonymous"
@@ -33,7 +34,10 @@
             <article class="donation-info">
                 <header class="donation-info-header">
                     <img alt="" class="campaign-img"
-                         th:src="${#arrays.isEmpty(campaign.pictureData) ? '/images/holdingHands.png' : 'data:image/jpeg;base64,' + campaign.generateBase64Image()}">
+                         th:if="${#arrays.isEmpty(campaign.pictureData)}" th:src="'/images/holdingHands.png'">
+                    <img alt="" class="campaign-img"
+                         th:unless="${#arrays.isEmpty(campaign.pictureData)}" src="data:image/jpeg;base64,"
+                         th:attrappend="src=${campaign.generateBase64Image()}">
                     <section class="donation-info-text">
                         <span class="campaign-detail">
                             <i class="fa-solid fa-calendar-days"></i>
@@ -83,7 +87,11 @@
             <section class="helper-information">
                 <h3>Последно кандидатствали</h3>
                 <section class="helper" th:each="donation : ${lastThreeDonations}">
-                    <img th:src="${#arrays.isEmpty(donation.owner.profilePictureData) ? '/images/avatar_small.png' : 'data:image/jpeg;base64,' + donation.owner.generateBase64Image()}"
+                    <img th:if="${#arrays.isEmpty(donation.owner.profilePictureData)}"
+                         th:src="'/images/avatar_small.png'"
+                         alt="Avatar" class="avatar">
+                    <img th:unless="${#arrays.isEmpty(donation.owner.profilePictureData)}" src="data:image/jpeg;base64,"
+                         th:attrappend="src=${donation.owner.generateBase64Image()}"
                          alt="Avatar" class="avatar">
                     <ul class="helper-info-text">
                         <li th:text="${donation.owner.username}"></li>
