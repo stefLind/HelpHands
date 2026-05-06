@@ -17,7 +17,7 @@
 <body>
 <header th:replace="~{fragments/navigation-bar.html :: header}"></header>
 
-<section class="introduction">
+<section class="introduction" th:unless="${isInEditMode}">
     <h1>Създаване на кампания</h1>
     <p>
         Създаването на кампания става лесно и бързо.
@@ -31,31 +31,40 @@
     </p>
 </section>
 
+<section class="introduction" th:if="${isInEditMode}">
+    <h1>Редактиране на кампания</h1>
+    <p>
+        Тук могат да се редактират само определени детайли от кампанията, а именно:
+        адрес, дата и час на събитието, колко човека и какво е нужно за кампанията, снимка.
+        Моля, свържете се с нас, ако имате нужда да се модифицират някои от другите данни.
+    </p>
+</section>
+
 <main class="main">
     <section class="create-campaign-section">
-        <form class="create-campaign-form" th:action="@{/campaign/new}" th:method="post" enctype="multipart/form-data"
-              th:object="${campaignCreationRequest}">
+        <form class="create-campaign-form" th:action="@{${actionUrl}}" th:method="${requestMapping}" enctype="multipart/form-data"
+              th:object="${campaignModificationRequest}">
             <label for="title">Заглавие:
                 <input type="text" id="title" name="title" th:field="*{title}"
-                       placeholder="Въведете заглавие на кампанията" required>
+                       placeholder="Въведете заглавие на кампанията" required th:readonly="${isInEditMode}">
             </label>
             <p class="alert-warning" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
 
             <label for="short-description">Кратко описание:
                 <textarea name="description" id="short-description" cols="30" rows="5" th:field="*{shortDescription}"
-                          placeholder="Напишете описание на кампанията" required></textarea>
+                          placeholder="Напишете описание на кампанията" required th:readonly="${isInEditMode}"></textarea>
             </label>
             <p class="alert-warning" th:if="${#fields.hasErrors('shortDescription')}"
                th:errors="*{shortDescription}"></p>
 
             <label for="description">Описание:
                 <textarea name="description" id="description" cols="30" rows="8" th:field="*{description}"
-                          placeholder="Напишете описание на кампанията" required></textarea>
+                          placeholder="Напишете описание на кампанията" required th:readonly="${isInEditMode}"></textarea>
             </label>
             <p class="alert-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
 
             <label for="type">Вид:
-                <select name="type" id="type" th:field="*{type}" required>
+                <select name="type" id="type" th:field="*{type}" required th:disabled="${isInEditMode}">
                     <option value="" selected="selected">Вид:</option>
                     <option th:value="${T(app.campaign.model.CampaignType).LABOR}">Дарение на труд</option>
                     <option th:value="${T(app.campaign.model.CampaignType).THINGS}">Дарение на вещи</option>

@@ -7,12 +7,14 @@ import app.donation.service.DonationService;
 import app.security.AuthenticationMetadata;
 import app.user.model.User;
 import app.user.service.UserService;
-import app.web.dto.CampaignCreationRequest;
 import app.web.dto.CampaignFilterData;
+import app.web.dto.CampaignModificationRequest;
 import app.web.dto.DonationRequest;
+import app.web.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -83,20 +85,24 @@ public class CampaignController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("create-campaign");
         modelAndView.addObject("user", user);
-        modelAndView.addObject("campaignCreationRequest", new CampaignCreationRequest());
+        modelAndView.addObject("campaignModificationRequest", new CampaignModificationRequest());
+        modelAndView.addObject("actionUrl", "/campaign/new");
+        modelAndView.addObject("requestMapping", "post");
 
         return modelAndView;
     }
 
     @PostMapping(path = "/campaign/new", consumes = MULTIPART_FORM_DATA_VALUE)
-    public ModelAndView createCampaign(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @Valid CampaignCreationRequest campaignCreationRequest, BindingResult bindingResult, @RequestPart("file") MultipartFile file) {
+    public ModelAndView createCampaign(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @Valid CampaignModificationRequest campaignCreationRequest, BindingResult bindingResult, @RequestPart("file") MultipartFile file) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("create-campaign");
             modelAndView.addObject("user", user);
-            modelAndView.addObject("campaignCreationRequest", campaignCreationRequest);
+            modelAndView.addObject("campaignModificationRequest", campaignCreationRequest);
+            modelAndView.addObject("actionUrl", "/campaign/new");
+            modelAndView.addObject("requestMapping", "post");
 
             return modelAndView;
         }
@@ -126,5 +132,44 @@ public class CampaignController {
         modelAndView.addObject("daysLeftPercentage", campaignService.getDaysLeftAsPercentage(campaign));
 
         return modelAndView;
+    }
+
+    @GetMapping("/campaign/{id}/details")
+    public ModelAndView getUpdateCampaignPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @PathVariable UUID id) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+        Campaign campaign = campaignService.getCampaignById(id);
+
+        if (!user.getId().equals(campaign.getCreator().getId())) {
+            throw new AccessDeniedException("You are not authorized to view or edit this resource.");
+        }
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("create-campaign");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("campaignModificationRequest", DtoMapper.mapCampaignToCampaignModificationRequest(campaign));
+        modelAndView.addObject("isInEditMode", true);
+        modelAndView.addObject("actionUrl", "/campaign/" + id + "/details");
+        modelAndView.addObject("requestMapping", "put");
+
+        return modelAndView;
+    }
+
+    @PutMapping(path = "/campaign/{id}/details", consumes = MULTIPART_FORM_DATA_VALUE)
+    public ModelAndView editCampaign(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata, @PathVariable UUID id, @Valid CampaignModificationRequest campaignModificationRequest, BindingResult bindingResult, @RequestPart("file") MultipartFile file) {
+        if (bindingResult.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView();
+            User user = userService.getUserById(authenticationMetadata.getUserId());
+            modelAndView.setViewName("create-campaign");
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("campaignModificationRequest", campaignModificationRequest);
+            modelAndView.addObject("isInEditMode", true);
+            modelAndView.addObject("actionUrl", "/campaign/" + id + "/details");
+            modelAndView.addObject("requestMapping", "put");
+
+            return modelAndView;
+        }
+        campaignService.editCampaign(id, campaignModificationRequest, file);
+
+        return new ModelAndView("redirect:/campaign/" + id);
     }
 }

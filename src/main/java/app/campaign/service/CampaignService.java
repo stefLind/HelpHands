@@ -7,8 +7,8 @@ import app.exception.DomainException;
 import app.user.model.User;
 import app.util.DateUtil;
 import app.util.StringUtil;
-import app.web.dto.CampaignCreationRequest;
 import app.web.dto.CampaignFilterData;
+import app.web.dto.CampaignModificationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,7 +34,7 @@ public class CampaignService {
         this.campaignRepository = campaignRepository;
     }
 
-    public void createCampaign(User user, CampaignCreationRequest campaignCreationRequest, MultipartFile file) {
+    public void createCampaign(User user, CampaignModificationRequest campaignCreationRequest, MultipartFile file) {
         try {
             Campaign campaign = Campaign.builder()
                     .creator(user)
@@ -114,6 +114,27 @@ public class CampaignService {
             return 1L;
         } else {
             return maxPercent - daysLeft;
+        }
+    }
+
+    public void editCampaign(UUID id, CampaignModificationRequest campaignModificationRequest, MultipartFile file) {
+        Campaign campaign = getCampaignById(id);
+        try {
+            campaign.setLocation(campaignModificationRequest.getLocation());
+            campaign.setAddress(campaignModificationRequest.getAddress());
+            campaign.setStartDate(campaignModificationRequest.getStartDate());
+            campaign.setEndDate(campaignModificationRequest.getEndDate());
+            campaign.setPeopleNeeded(campaignModificationRequest.getPeopleNeeded());
+            campaign.setThingsNeeded(campaignModificationRequest.getThingsNeeded());
+            campaign.setFoodNeeded(campaignModificationRequest.getFoodNeeded());
+            campaign.setPictureData(file.getBytes());
+            campaign.setUpdatedOn(LocalDateTime.now());
+
+            campaign = campaignRepository.save(campaign);
+            log.info("Campaign with id [%s] and type [%s] has been updated successfully.".formatted(campaign.getId(), campaign.getType()));
+        } catch (IOException e) {
+            log.error("Can't update campaign for user with id [%s].".formatted(campaign.getCreator().getId()), e);
+            throw new RuntimeException("Unable to save campaign for user with id: [%s]. Please try again.".formatted(campaign.getCreator().getId()));
         }
     }
 }

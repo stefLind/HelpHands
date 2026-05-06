@@ -55,6 +55,8 @@
                     <button class="campaign-btn" onclick="togglePopup('popupOverlay')">
                         Кандидатствай
                     </button>
+                    <a th:if="${campaign.creator.id == user.id}" th:href="@{'/campaign/' + ${campaign.id} + '/details'}"
+                       class="campaign-btn">Редактирай</a>
                 </article>
             </article>
         </article>

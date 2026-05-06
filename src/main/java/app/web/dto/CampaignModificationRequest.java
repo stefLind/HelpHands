@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CampaignCreationRequest {
+public class CampaignModificationRequest {
 
     @Size(max = 40, message = "Title can't have more than 40 symbols.")
     private String title;
