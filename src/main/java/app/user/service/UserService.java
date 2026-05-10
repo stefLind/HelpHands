@@ -1,5 +1,6 @@
 package app.user.service;
 
+import app.email.service.EmailService;
 import app.exception.DomainException;
 import app.exception.EmailAlreadyExistsException;
 import app.exception.PasswordsNotMatchingException;
@@ -8,6 +9,7 @@ import app.security.AuthenticationMetadata;
 import app.user.model.User;
 import app.user.model.UserRole;
 import app.user.repository.UserRepository;
+import app.util.StringUtil;
 import app.web.dto.RegisterRequest;
 import app.web.dto.UserEditRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -31,11 +33,13 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -53,6 +57,8 @@ public class UserService implements UserDetailsService {
         }
 
         User user = userRepository.save(initializeUser(registerRequest));
+
+        emailService.modifyUserContactDetails(user.getId(), user.getEmail());
 
         log.info("User with username [%s] and id [%s] has been created successfully.".formatted(user.getUsername(), user.getId()));
 
@@ -84,6 +90,7 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new DomainException("User with id [%s] does not exist.".formatted(userId)));
     }
 
+
     public void editUserDetails(UUID userId, UserEditRequest userEditRequest, MultipartFile file) {
         User user = getUserById(userId);
         User company = null;
@@ -91,19 +98,32 @@ public class UserService implements UserDetailsService {
             company = getUserById(userEditRequest.getCompanyId());
         }
 
+        if (StringUtil.isNotNullOrBlank(userEditRequest.getEmail())) {
+            Optional<User> optionalUser = userRepository.findByEmailAndIdNot(userEditRequest.getEmail(), userId);
+            if (optionalUser.isPresent()) {
+                throw new RuntimeException("Unable to save user with id: [%s]. Please try again.".formatted(userId));
+            }
+        }
+
         try {
             user.setFirstName(userEditRequest.getFirstName());
             user.setSurname(userEditRequest.getSurname());
             user.setLastName(userEditRequest.getLastName());
-            user.setEmail(userEditRequest.getEmail());
+            if (StringUtil.isNotNullOrBlank(userEditRequest.getEmail())) {
+                user.setEmail(userEditRequest.getEmail());
+                emailService.modifyUserContactDetails(user.getId(), userEditRequest.getEmail());
+            }
             user.setAddress(userEditRequest.getAddress());
             user.setTown(userEditRequest.getTown());
             if (company != null) {
                 user.setCompany(company);
             }
             user.setCompanyName(userEditRequest.getCompanyName());
-            user.setProfilePictureData(file.getBytes());
             user.setUpdatedOn(LocalDateTime.now());
+
+            if (!file.isEmpty()) {
+                user.setProfilePictureData(file.getBytes());
+            }
 
             userRepository.save(user);
         } catch (IOException e) {
